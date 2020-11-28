@@ -12,11 +12,14 @@ public class PeopleManager : MonoBehaviour
     public int Dnum = 0;
     public List<People> pList;
     public GameObject[] peoObj;//4种人的prefab
-    public int countx=7;
-    public int countz=4;
-    public float mapx=14;
-    public float mapz =8;
-    
+    public int countx = 7;
+    public int countz = 4;
+    public float mapx = 14;
+    public float mapz = 8;
+    public float totalAgree;
+    public int agCount = 0;
+    public int disCount = 0;
+    public float agL = 0f;
     private void Awake()
     {
         instance = this;
@@ -30,7 +33,7 @@ public class PeopleManager : MonoBehaviour
         totalNum = Anum + Bnum + Cnum + Dnum;
         List<int> ilist = new List<int>();
         pList = new List<People>();
-        for(int i = 0; i < Anum; i++)
+        for (int i = 0; i < Anum; i++)
         {
             ilist.Add(0);
         }
@@ -46,12 +49,12 @@ public class PeopleManager : MonoBehaviour
         {
             ilist.Add(3);
         }
-        Queue<int> ique = new Queue<int>(Utilities.ShuffleArray(ilist.ToArray(),Random.Range(1000, 9999)));
+        Queue<int> ique = new Queue<int>(Utilities.ShuffleArray(ilist.ToArray(), Random.Range(1000, 9999)));
         int curNum = 0;//当前人数,作为id,id从1开始
-        for(int i = 0; i < totalNum; i++)
+        for (int i = 0; i < totalNum; i++)
         {
             int type = ique.Dequeue();
-            GameObject go = Instantiate(peoObj[type],CalPosByid(++curNum),Quaternion.identity);
+            GameObject go = Instantiate(peoObj[type], CalPosByid(++curNum), Quaternion.identity);
             go.GetComponent<People>().type = type;
             switch (type)
             {
@@ -68,6 +71,22 @@ public class PeopleManager : MonoBehaviour
                     go.GetComponent<PeopleD>().InitPeople(curNum);
                     break;
             }
+
+            float agree = 0.1f;
+            float agreesum = 0;
+            if (totalAgree > 0)
+            {
+                agree = Random.Range(-0.4f, 0f);
+            }
+            else if (totalAgree < 0)
+            {
+                agree = Random.Range(0f, 0.4f);
+            }
+            agreesum += agree;
+            totalAgree = agreesum / totalNum;
+            go.GetComponent<People>().agree = agree;
+            pList.Add(go.GetComponent<People>());
+            go.GetComponent<People>().cdTimer = Random.Range(2f,5f);
         }
     }
     //根据人物编号计算位置
@@ -75,9 +94,31 @@ public class PeopleManager : MonoBehaviour
     {
         float x = (id - 1) % countx * (mapx / countx) + (mapx / countx) / 2;
         float z = (int)((id - 1) / countx) * (mapz / countz) + (mapz / countz) / 2;
-        Vector3 offset = new Vector3(Random.Range(-0.8f, 0.8f),0,Random.Range(-0.8f, 0.8f));
-        Vector3 res = new Vector3(x, peoObj[0].transform.position.y,z)+offset;
+        Vector3 offset = new Vector3(Random.Range(-0.8f, 0.8f), 0, Random.Range(-0.8f, 0.8f));
+        Vector3 res = new Vector3(x, peoObj[0].transform.position.y, z) + offset;
         return res;
+    }
+    private void Update()
+    {
+        float agreesum = 0;
+        int agsum = 0;
+        int dissum = 0;
+        foreach (People p in pList)
+        {
+            agreesum += p.agree;
+            if (p.agree > 0)
+            {
+                agsum++;
+            }
+            else
+            {
+                dissum++;
+            }
+        }
+        totalAgree = agreesum / totalNum;
+        agCount = agsum;
+        disCount = dissum;
+        agL = (float)(agCount) / totalNum;
     }
 }
 public class Utilities
