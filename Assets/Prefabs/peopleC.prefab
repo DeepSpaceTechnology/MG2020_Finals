@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5199769138834118592}
   - component: {fileID: 5199769138834118593}
   - component: {fileID: 3861845190217721385}
+  - component: {fileID: -760574441209784503}
   m_Layer: 0
   m_Name: peopleC
   m_TagString: people
@@ -88,7 +89,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5199769138834118623}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -111,6 +112,25 @@ MonoBehaviour:
   conveyStr: 0.5
   conveyWant: 0.5
   stubborn: 0.3
-  talkcd: 5
   isTalking: 0
+  mainTalker: 0
+  talkcd: 5
+  isCd: 0
+  talkid: 0
   agree: 0.5
+--- !u!54 &-760574441209784503
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5199769138834118623}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0

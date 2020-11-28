@@ -76,7 +76,7 @@ public class PeopleManager : MonoBehaviour
         float x = (id - 1) % countx * (mapx / countx) + (mapx / countx) / 2;
         float z = (int)((id - 1) / countx) * (mapz / countz) + (mapz / countz) / 2;
         Vector3 offset = new Vector3(Random.Range(-0.8f, 0.8f),0,Random.Range(-0.8f, 0.8f));
-        Vector3 res = new Vector3(x, peoObj[0].transform.position.y,z);
+        Vector3 res = new Vector3(x, peoObj[0].transform.position.y,z)+offset;
         return res;
     }
 }
