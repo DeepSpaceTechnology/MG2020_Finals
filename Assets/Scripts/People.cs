@@ -5,12 +5,12 @@ using UnityEngine;
 public class People : MonoBehaviour
 {
     public int pid = 1;
-    public int type=0;//0 1 2 3 四种人
-    public float speed=3f;
+    public int type = 0;//0 1 2 3 四种人
+    public float speed = 3f;
     public float conveyStr = 0.5f;//传播强度
     public float conveyWant = 0.5f;//传播欲望
     public float stubborn = 0.3f;//固执度
-    public bool isTalking=false;
+    public bool isTalking = false;
     public bool mainTalker = false;
     public float talkcd = 5f;
     public float cdTimer = 0f;
@@ -21,9 +21,12 @@ public class People : MonoBehaviour
     People otherPeo;
     public Animator anim;
     public SpriteRenderer spriteRenderer;
+    public GameObject Arrow_up;//上升箭头
+    public Color blue = new Color(0, 0.73f, 0.9f);
+    public Color red = new Color(0.9f, 0, 0);
     public void InitPeople(int id)
     {
-        pid=id;
+        pid = id;
         //anim = transform.GetChild(0).GetComponent<Animator>();
         anim = GetComponentInChildren<Animator>();
         //Vector2 offset = new Vector2(Random.Range(-0.8f, 0.8f), Random.Range(-0.8f, 0.8f));
@@ -31,16 +34,16 @@ public class People : MonoBehaviour
     public void Move()
     {
         //没到达目标，继续走
-        if(target != Vector3.zero && Vector3.Distance(transform.position,target)>0.2f)
+        if (target != Vector3.zero && Vector3.Distance(transform.position, target) > 0.2f)
         {
             transform.Translate((target - transform.position).normalized * speed * Time.deltaTime);
             return;
         }
 
         //到达目标，设置新目标点
-        if (target == Vector3.zero || Vector3.Distance(transform.position, target) < 0.2f )
+        if (target == Vector3.zero || Vector3.Distance(transform.position, target) < 0.2f)
         {
-            target = new Vector3(Random.Range(0.5f, PeopleManager.instance.mapx-0.5f), transform.position.y, 
+            target = new Vector3(Random.Range(0.5f, PeopleManager.instance.mapx - 0.5f), transform.position.y,
                 Random.Range(0.5f, PeopleManager.instance.mapz - 0.5f));
             //Debug.Log("到目标点了");
             SetAnimator(target);
@@ -53,7 +56,8 @@ public class People : MonoBehaviour
         {
 
         }
-        else{
+        else
+        {
             Move();
         }
 
@@ -68,15 +72,17 @@ public class People : MonoBehaviour
         }
     }
 
-    public void SetAnimator(Vector3 newTarger,bool talkStateAni=false) {
-        if (talkStateAni) {
+    public void SetAnimator(Vector3 newTarger, bool talkStateAni = false)
+    {
+        if (talkStateAni)
+        {
             anim.SetInteger("state", 3);
             return;
         }
         Vector3 tmp = newTarger - transform.position;
-        Vector3 dir = new Vector3(tmp.x,0,tmp.z);
+        Vector3 dir = new Vector3(tmp.x, 0, tmp.z);
         dir.Normalize();
-        tmp=Quaternion.FromToRotation(Vector3.forward, dir).eulerAngles;
+        tmp = Quaternion.FromToRotation(Vector3.forward, dir).eulerAngles;
         //Debug.Log(dir.x+" "+dir.z+"    "+ tmp);
         //if (dir.x <= 0.5 && dir.x >= -0.5 && dir.z >= 0)   //up
         //{
@@ -99,9 +105,12 @@ public class People : MonoBehaviour
         //    anim.SetBool("s", false);
         //}
         //else { Debug.Log("??"); }
-        if (tmp.y <= 30 || tmp.y >= 330) {
+        if (tmp.y <= 30 || tmp.y >= 330)
+        {
             anim.SetInteger("state", 1);
-        } else if (tmp.y>30&& tmp.y<150) {
+        }
+        else if (tmp.y > 30 && tmp.y < 150)
+        {
             spriteRenderer.flipX = true;
             anim.SetInteger("state", 2);
         }
@@ -120,20 +129,17 @@ public class People : MonoBehaviour
     {
         if (otherPeo == null) return;
         int othera = otherAgree > 0 ? 1 : -1;
-        float tickadd = otherAgree > 0 ? 1.0f : 0.9f;
+        ShowArrow(otherAgree > 0);
+        float tickadd = otherAgree > 0 ? 1.0f : 0.95f;
         agree += (1 - stubborn) * otherPeo.conveyStr * othera * tickadd;
         if (agree > 1)
         {
             agree = 1;
-        }else if (agree < -1)
+        }
+        else if (agree < -1)
         {
             agree = -1;
         }
-
-    }
-    public void UpdateColor()
-    {
-
     }
 
 
@@ -210,19 +216,20 @@ public class People : MonoBehaviour
             spriteRenderer.flipX = true;
             otherPeo.spriteRenderer.flipX = false;
         }
-        else {
+        else
+        {
             spriteRenderer.flipX = false;
             otherPeo.spriteRenderer.flipX = true;
         }
 
-        SetAnimator( Vector3.one, true);
+        SetAnimator(Vector3.one, true);
         otherPeo.SetAnimator(Vector3.one, true);
         yield return new WaitForSeconds(0.2f);
         //支持率数值计算
         float tmpAgree = agree;
         ChangeSelf(otherPeo.agree);
         otherPeo.ChangeSelf(tmpAgree);
-        
+
         yield return new WaitForSeconds(2f);
         //Debug.Log(pid + "  " + otherPeo.pid + "  结束交流");
         otherPeo.OverTalk();
@@ -237,6 +244,49 @@ public class People : MonoBehaviour
         otherPeo = null;
         isCd = true;
         cdTimer = talkcd;
-        SetAnimator(target,false);
+        SetAnimator(target, false);
+    }
+
+
+    public void ShowArrow(bool toRed)//参数，是否被说服要偏向红色
+    {
+        if (toRed)
+        {
+            if (agree > 0)
+            {
+                StartCoroutine(SetArrow(red, true));//2红
+            }
+            else
+            {
+                StartCoroutine(SetArrow(blue, false));//蓝-红
+            }
+        }
+        else
+        {
+            if (agree > 0)
+            {
+                StartCoroutine(SetArrow(red, false));//红-蓝
+            }
+            else
+            {
+                StartCoroutine(SetArrow(blue, true));//2蓝
+            }
+        }
+
+    }
+    IEnumerator SetArrow(Color c, bool isup)
+    {
+        Arrow_up.GetComponent<SpriteRenderer>().color = c;
+        if (isup)
+        {
+            Arrow_up.transform.localRotation = Quaternion.Euler(45, 0, 0);
+        }
+        else
+        {
+            Arrow_up.transform.localRotation = Quaternion.Euler(45, 0, 180);
+        }
+        Arrow_up.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        Arrow_up.SetActive(false);
     }
 }

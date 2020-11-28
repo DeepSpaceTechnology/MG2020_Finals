@@ -76,11 +76,11 @@ public class PeopleManager : MonoBehaviour
             float agreesum = 0;
             if (totalAgree > 0)
             {
-                agree = Random.Range(-0.4f, 0f);
+                agree = Random.Range(-0.2f, 0f);
             }
             else if (totalAgree < 0)
             {
-                agree = Random.Range(0f, 0.4f);
+                agree = Random.Range(0f, 0.2f);
             }
             agreesum += agree;
             totalAgree = agreesum / totalNum;
