@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\17885\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\17885\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_MG2020_Finals.1941646850.00" t="ExcludeRecursive" />
+    <e p="F:\MG2020_Finals" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Labs" t="Include">
+          <e p="Cloud" t="Include">
+            <e p="CloudsGenerator.cs" t="Include" />
+            <e p="FixedCloud.shader" t="Include" />
+            <e p="FixedCloud_VolShadow.shader" t="Include" />
+            <e p="FurPass.cginc" t="Include" />
+            <e p="MappingComputeShader.compute" t="Include" />
+            <e p="Point.cs" t="Include" />
+            <e p="ProjectorShadow.shader" t="Include" />
+            <e p="ShadowOutShape.cs" t="Include" />
+            <e p="ShadowPass.cginc" t="Include" />
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="GameRoot.cs" t="Include" />
+          <e p="People.cs" t="Include" />
+          <e p="PeopleA.cs" t="Include" />
+          <e p="PeopleB.cs" t="Include" />
+          <e p="PeopleC.cs" t="Include" />
+          <e p="PeopleD.cs" t="Include" />
+          <e p="PeopleManager.cs" t="Include" />
+          <e p="UIMgr.cs" t="Include" />
+        </e>
+        <e p="Shaders" t="Include">
+          <e p="Cloud" t="Include">
+            <e p="FurPass.cginc" t="Include" />
+            <e p="MappingComputeShader.compute" t="Include" />
+            <e p="ShadowPass.cginc" t="Include" />
+          </e>
+        </e>
+        <e p="ThirdParty" t="Include">
+          <e p="UnitySpriteShaders" t="Include">
+            <e p="SpriteShaders" t="Include">
+              <e p="CameraDepthNormalsTexture.shader" t="Include" />
+              <e p="CameraDepthTexture.shader" t="Include" />
+              <e p="CameraNormalsTexture.shader" t="Include" />
+              <e p="CGIncludes" t="Include">
+                <e p="Noise" t="Include">
+                  <e p="ClassicNoise2D.hlsl" t="Include" />
+                  <e p="ClassicNoise3D.hlsl" t="Include" />
+                  <e p="Noise2d.cginc" t="Include" />
+                  <e p="Noise3d.cginc" t="Include" />
+                  <e p="SimplexNoise2D.hlsl" t="Include" />
+                  <e p="SimplexNoise3D.hlsl" t="Include" />
+                </e>
+                <e p="ShaderMaths.cginc" t="Include" />
+                <e p="ShaderShared.cginc" t="Include" />
+                <e p="SimplexNoise3D.hlsl" t="Include" />
+                <e p="SpriteDissolve.cginc" t="Include" />
+                <e p="SpriteLighting.cginc" t="Include" />
+                <e p="SpritePixelLighting.cginc" t="Include" />
+                <e p="SpriteShadows.cginc" t="Include" />
+                <e p="SpriteSpecular.cginc" t="Include" />
+                <e p="SpriteUnlit.cginc" t="Include" />
+                <e p="SpriteVertexLighting.cginc" t="Include" />
+              </e>
+              <e p="DemoScene" t="Include">
+                <e p="Scripts" t="Include">
+                  <e p="Robot.cs" t="Include" />
+                  <e p="ShaderColorAnimator.cs" t="Include" />
+                  <e p="ShaderFloatAnimator.cs" t="Include" />
+                </e>
+              </e>
+              <e p="Editor" t="Include">
+                <e p="SpriteDiffuseShaderGUI.cs" t="Include" />
+                <e p="SpriteShaderGUI.cs" t="Include" />
+              </e>
+              <e p="SpritesPixelLit.shader" t="Include" />
+              <e p="SpritesPixelLitDissolve.shader" t="Include" />
+              <e p="SpritesUnlit.shader" t="Include" />
+              <e p="SpritesVertexLit.shader" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="MG2020_Finals.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

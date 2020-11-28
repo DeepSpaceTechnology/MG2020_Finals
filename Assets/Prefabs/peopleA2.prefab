@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6943318413780359252}
   - component: {fileID: 1718593629059668961}
   - component: {fileID: 3740649679244621307}
+  - component: {fileID: 7508179468093392784}
   m_Layer: 0
   m_Name: peopleA2
   m_TagString: people
@@ -142,6 +143,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.8
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7508179468093392784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740649679244621304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1af2a89db4edf4a46b734c95e75c2267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 2
+  strength: 1
 --- !u!1 &9123285474063123309
 GameObject:
   m_ObjectHideFlags: 0
