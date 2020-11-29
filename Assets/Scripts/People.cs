@@ -135,13 +135,14 @@ public class People : MonoBehaviour
         }
         if (agree > 0.7 && otherAgree > 0)
         {
-            tickadd2 = 0.3f;
+            tickadd2 = 0.2f;
         }
         if (agree < -0.7 && otherAgree < 0)
         {
-            tickadd2 = 0.3f;
+            tickadd2 = 0.2f;
         }
         agree += (1 - stubborn) * otherPeo.conveyStr * othera * tickadd* tickadd2;
+
         ShowArrow(otherAgree > 0);
         if (agree > 1f)
         {
@@ -242,14 +243,15 @@ public class People : MonoBehaviour
             spriteRenderer.flipX = false;
             otherPeo.spriteRenderer.flipX = true;
         }
-
         SetAnimator(Vector3.one, true);
         otherPeo.SetAnimator(Vector3.one, true);
-        yield return new WaitForSeconds(2f);
-        //支持率数值计算
+        yield return new WaitForSeconds(0.1f);
         float tmpAgree = agree;
         ChangeSelf(otherPeo.agree);
         otherPeo.ChangeSelf(tmpAgree);
+
+        yield return new WaitForSeconds(2f);
+        //支持率数值计算
 
         //Debug.Log(pid + "  " + otherPeo.pid + "  结束交流");
         UIMgr.instance.OverTalkUpdate(pid, otherPeo.pid);
@@ -279,6 +281,7 @@ public class People : MonoBehaviour
         }
         if (toRed)
         {
+            
             if (agree > 0)
             {
                 StartCoroutine(SetArrow(red, true));//2红
@@ -346,6 +349,7 @@ public class People : MonoBehaviour
 
         if (agree > 1) agree = 1;
         UIMgr.instance.OverTalkUpdate(pid, pid);
+        ShowArrow(true, true);
     }
 
     public void Lawyerletter()//律师函
@@ -361,7 +365,8 @@ public class People : MonoBehaviour
             agree += Random.Range(0.1f, 0.2f);
             stubborn = Random.Range(0.1f, 0.2f);
         }
-
+        StartCoroutine(DelSpeed());
+        ChangeColor();
         if (agree > 1) agree = 1;
         UIMgr.instance.OverTalkUpdate(pid, pid);
     }
@@ -372,12 +377,14 @@ public class People : MonoBehaviour
         {
             agree += Random.Range(0.05f, 0.1f);
             stubborn = Random.Range(0.4f, 0.6f);
-            conveyStr += Random.Range(0.1f, 0.3f);
+            conveyStr += Random.Range(0.1f, 0.2f);
             conveyWant += Random.Range(0.1f, 0.3f);
             talkcd = 3f;
         }
-
+        StartCoroutine(AddSpeed());
         if (agree > 1) agree = 1;
+        if (conveyStr > 1) conveyStr = 1;
+        if (conveyWant > 1) conveyWant = 1;
         UIMgr.instance.OverTalkUpdate(pid, pid);
     }
 
@@ -387,12 +394,12 @@ public class People : MonoBehaviour
         if (agree > 0)
         {
             clothMat.SetFloat("_Hue", 0.42f);
-            clothMat.SetFloat("_Saturation", Mathf.Clamp(1.875f*agree,0,1.5f));           
+            clothMat.SetFloat("_Saturation", Mathf.Clamp(1.875f*agree,0,2f));           
         }
         else
         {
             clothMat.SetFloat("_Hue", 0f);
-            clothMat.SetFloat("_Saturation", Mathf.Clamp(1.875f * -agree, 0, 1.5f));
+            clothMat.SetFloat("_Saturation", Mathf.Clamp(1.875f * -agree, 0, 2f));
         }
     }
     public void ShowShadow(bool hide = false)
@@ -406,7 +413,7 @@ public class People : MonoBehaviour
         }
         else
         {
-            PeopleManager.instance.Cloudobj._points.Remove(GetComponent<Point>());
+            StartCoroutine(FadeOutShadow());
             hasShadow = false;
         }
     }
@@ -420,6 +427,35 @@ public class People : MonoBehaviour
             yield return new WaitForSeconds(0.15f);
         }
         GetComponentInChildren<Point>().radius = 1f;
+    }
+
+    IEnumerator FadeOutShadow()
+    {
+        float org = GetComponentInChildren<Point>().radius;
+        for (int i = 1; i <= 10; i++)
+        {
+            GetComponentInChildren<Point>().radius = Mathf.Lerp(org, -5, i / 10f);
+            yield return new WaitForSeconds(0.1f);
+        }
+        GetComponentInChildren<Point>().radius = -5f;
+        PeopleManager.instance.Cloudobj._points.Remove(GetComponent<Point>());
+    }
+
+
+    IEnumerator AddSpeed()
+    {
+        float org = speed;
+        speed = 1.4f;
+        yield return new WaitForSeconds(3f);
+        speed = org;
+    }
+
+    IEnumerator DelSpeed()
+    {
+        float org = speed;
+        speed = 0.3f;
+        yield return new WaitForSeconds(3f);
+        speed = org;
     }
 
 }

@@ -34,39 +34,49 @@ public class CloudsGenerator : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_points.Count > 0)
-        {
-            RenderCloudMap();
-        }        
+        RenderCloudMap();
     }
 
     public void RenderCloudMap()
     {
-        var data = new PosData[_points.Count];
-
-        for (var i = 0; i < _points.Count; i++)
+        if(_points.Count  > 0)
         {
-            data[i].Pos.x = (((-_points[i].transform.position.x) + (mapSize)) / (2*mapSize)) * _renderTexSize;
-            data[i].Pos.y = (((-_points[i].transform.position.z) + (mapSize)) / (2*mapSize)) * _renderTexSize;
+            var data = new PosData[_points.Count];
 
-            //Debug.Log(data[i].Pos);
+            for (var i = 0; i < _points.Count; i++)
+            {
+                data[i].Pos.x = (((-_points[i].transform.position.x) + (mapSize)) / (2 * mapSize)) * _renderTexSize;
+                data[i].Pos.y = (((-_points[i].transform.position.z) + (mapSize)) / (2 * mapSize)) * _renderTexSize;
 
-            data[i].Strength = _points[i].strength;
+                //Debug.Log(data[i].Pos);
 
-            data[i].Radius = _points[i].radius;
+                data[i].Strength = _points[i].strength;
+
+                data[i].Radius = _points[i].radius;
+            }
+
+            var buffer = new ComputeBuffer(data.Length, 4 * 4);
+            buffer.SetData(data);
+
+            var kernelHandle = mappingShader.FindKernel("CSMain");
+            mappingShader.SetFloat("pointCount", _points.Count);
+            mappingShader.SetBuffer(kernelHandle, "dataBuffer", buffer);
+            mappingShader.SetTexture(kernelHandle, "Result", map);
+            mappingShader.Dispatch(kernelHandle, map.width / 8, map.height / 8, 1);
+            buffer.Release();
+
+
+        }
+        else
+        {
+            var kernelHandle = mappingShader.FindKernel("CSMain");
+            mappingShader.SetFloat("pointCount", 0);
+            mappingShader.SetTexture(kernelHandle, "Result", map);
+            mappingShader.Dispatch(kernelHandle, map.width / 8, map.height / 8, 1);
+
         }
 
 
-        var buffer = new ComputeBuffer(data.Length, 4 * 4);
-        buffer.SetData(data);
-
-        var kernelHandle = mappingShader.FindKernel("CSMain");
-        mappingShader.SetFloat("pointCount", _points.Count);
-        mappingShader.SetBuffer(kernelHandle, "dataBuffer", buffer);
-        mappingShader.SetTexture(kernelHandle, "Result", map);
-        mappingShader.Dispatch(kernelHandle, map.width / 8, map.height / 8, 1);
-        buffer.Release();
-        
     }
 }
 

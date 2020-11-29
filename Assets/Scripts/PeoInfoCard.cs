@@ -30,7 +30,7 @@ public class PeoInfoCard : MonoBehaviour
         switch (index)
         {
             case 0:
-                t_pname.text = "纯路人";
+                t_pname.text = "普通人";
                 t_detail.text = "平平无奇的普通人";
                 break;
             case 1:

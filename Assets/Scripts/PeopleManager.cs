@@ -21,6 +21,8 @@ public class PeopleManager : MonoBehaviour
     public int disCount = 0;
     public float agL = 0f;
     public CloudsGenerator Cloudobj;
+    public float GetMoneyCd = 5f;
+    public float timer = 0;
     private void Awake()
     {
         instance = this;
@@ -79,19 +81,19 @@ public class PeopleManager : MonoBehaviour
                     break;
             }
 
-            float agree = 0.1f;
+            float agree = Random.Range(-0.6f, 0.1f);
             float agreesum = 0;
-            if (totalAgree > 0)
-            {
-                agree = Random.Range(-0.1f, 0f);
-            }
-            else if (totalAgree < 0)
-            {
-                agree = Random.Range(0f, 0.1f);
-            }
+            //if (totalAgree >= 0)
+            //{
+            //    agree = Random.Range(-0.1f, 0f);
+            //}
+            //else if (totalAgree < 0)
+            //{
+            //    agree = Random.Range(0f, 0.1f);
+            //}
             agreesum += agree;
             totalAgree = agreesum / totalNum;
-            go.GetComponent<People>().agree = agree;
+            go.GetComponent<People>().agree = agree-0.03f;
             go.GetComponent<People>().ChangeColor();
             pList.Add(go.GetComponent<People>());
             go.GetComponent<People>().cdTimer = Random.Range(2f,5f);
@@ -121,15 +123,22 @@ public class PeopleManager : MonoBehaviour
             }
         }
 
+        //统计各种信息
         float agreesum = 0;
         int agsum = 0;
         int dissum = 0;
+        int m = 5;//本次资金保底
         foreach (People p in pList)
         {
             agreesum += p.agree;
             if (p.agree > 0)
             {
                 agsum++;
+                if (p.hasShadow)
+                {
+                    m += 2;
+                }
+                m += 1;
             }
             else
             {
@@ -140,6 +149,18 @@ public class PeopleManager : MonoBehaviour
         agCount = agsum;
         disCount = dissum;
         agL = (float)(agCount) / totalNum;
+
+        //赚钱
+        if (timer < GetMoneyCd)
+        {
+            timer += Time.deltaTime;
+        }
+        else
+        {
+            timer = 0;
+            GameRoot.instance.money += m;
+            UIMgr.instance.showMoney.UpdateMoney();
+        }
     }
 }
 public class Utilities

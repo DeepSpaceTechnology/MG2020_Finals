@@ -10,5 +10,6 @@ public class PeopleD : People
         conveyWant = Random.Range(0.8f, 0.9f);
         conveyStr = Random.Range(0.8f, 0.9f);
         stubborn = Random.Range(0.7f, 0.8f);
+        money = Random.Range(200, 300);
     }
 }
