@@ -20,6 +20,7 @@ public class PeopleManager : MonoBehaviour
     public int agCount = 0;
     public int disCount = 0;
     public float agL = 0f;
+    public CloudsGenerator Cloudobj;
     private void Awake()
     {
         instance = this;
@@ -27,7 +28,7 @@ public class PeopleManager : MonoBehaviour
     private void Start()
     {
         CreateAll();
-        Time.timeScale = 3;
+        //Time.timeScale = 3;
     }
     public void CreateAll()
     {
@@ -56,6 +57,11 @@ public class PeopleManager : MonoBehaviour
         {
             int type = ique.Dequeue();
             GameObject go = Instantiate(peoObj[type], CalPosByid(++curNum), Quaternion.identity);
+            if (Cloudobj != null)
+            {
+                go.GetComponentInChildren<ShadowOutShape>().generator = Cloudobj;
+                Cloudobj._points.Add(go.GetComponent<Point>());
+            }
             go.GetComponent<People>().type = type;
             switch (type)
             {

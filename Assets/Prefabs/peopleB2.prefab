@@ -70,7 +70,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e99f8a269892f3d449db222d7f11a8ad, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d618e172562dc0d46ac55f07ea76e507, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -91,7 +91,7 @@ Animator:
   m_GameObject: {fileID: 1956239554268702929}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c2eab7f8d9e145542bb5e6398c5aecd5, type: 2}
+  m_Controller: {fileID: 9100000, guid: 27253c9edcb4cdb45bca116d888abb7f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -208,6 +208,8 @@ MonoBehaviour:
   isCd: 0
   talkid: 0
   agree: 0.5
+  hasBuy: 0
+  money: 10
   anim: {fileID: 1178985998793934493}
   spriteRenderer: {fileID: 5372260348421158002}
   Arrow_up: {fileID: 4843770135021230519}

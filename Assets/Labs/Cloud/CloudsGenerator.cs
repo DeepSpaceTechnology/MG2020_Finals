@@ -47,7 +47,7 @@ public class CloudsGenerator : MonoBehaviour
             data[i].Pos.x = (((-_points[i].transform.position.x) + (mapSize)) / (2*mapSize)) * _renderTexSize;
             data[i].Pos.y = (((-_points[i].transform.position.z) + (mapSize)) / (2*mapSize)) * _renderTexSize;
 
-            Debug.Log(data[i].Pos);
+            //Debug.Log(data[i].Pos);
 
             data[i].Strength = _points[i].strength;
 

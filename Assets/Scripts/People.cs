@@ -17,6 +17,8 @@ public class People : MonoBehaviour
     public bool isCd = false;
     public int talkid = 0;
     public float agree = 0.5f;
+    public bool hasBuy = false;
+    public int money = 10;
     Vector3 target;
     People otherPeo;
     public Animator anim;
@@ -319,5 +321,10 @@ public class People : MonoBehaviour
         {
             Arrow_up.SetActive(false);
         }
+    }
+
+    public void BuyPeople()
+    {
+
     }
 }
