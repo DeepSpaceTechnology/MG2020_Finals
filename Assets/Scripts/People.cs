@@ -24,6 +24,7 @@ public class People : MonoBehaviour
     public GameObject Arrow_up;//上升箭头
     public Color blue = new Color(0, 0.73f, 0.9f);
     public Color red = new Color(0.9f, 0, 0);
+    Queue<int> arrque = new Queue<int>();//多处显示箭头时，每次出现加入队列，结束时退出队列，箭头消失时检查队列是否为空
     public void InitPeople(int id)
     {
         pid = id;
@@ -130,15 +131,40 @@ public class People : MonoBehaviour
         if (otherPeo == null) return;
         int othera = otherAgree > 0 ? 1 : -1;
         ShowArrow(otherAgree > 0);
-        float tickadd = otherAgree > 0 ? 1.0f : 0.95f;
-        agree += (1 - stubborn) * otherPeo.conveyStr * othera * tickadd;
-        if (agree > 1)
+        float tickadd=1f;//防止同化过于严重
+        if(othera>0 && agree>0 && PeopleManager.instance.agL > 0.55f)
         {
-            agree = 1;
+            tickadd = 0.4f;
         }
-        else if (agree < -1)
+        if (othera < 0 && agree < 0 && PeopleManager.instance.agL < 0.45f)
         {
-            agree = -1;
+            tickadd = 0.4f;
+        }
+        //防止过高值出现
+        if(agree>0.6 && otherAgree > 0)
+        {
+            tickadd = 0.5f;
+        }
+        if (agree < -0.6 && otherAgree < 0)
+        {
+            tickadd = 0.5f;
+        }
+        if (agree > 0.8 && otherAgree > 0)
+        {
+            tickadd = 0.2f;
+        }
+        if (agree < -0.8 && otherAgree < 0)
+        {
+            tickadd = 0.2f;
+        }
+        agree += (1 - stubborn) * otherPeo.conveyStr * othera * tickadd;
+        if (agree > 1f)
+        {
+            agree = 1f;
+        }
+        else if (agree < -1f)
+        {
+            agree = -1f;
         }
     }
 
@@ -276,6 +302,7 @@ public class People : MonoBehaviour
     }
     IEnumerator SetArrow(Color c, bool isup)
     {
+        arrque.Enqueue(1);
         Arrow_up.GetComponent<SpriteRenderer>().color = c;
         if (isup)
         {
@@ -287,6 +314,10 @@ public class People : MonoBehaviour
         }
         Arrow_up.SetActive(true);
         yield return new WaitForSeconds(2f);
-        Arrow_up.SetActive(false);
+        arrque.Dequeue();
+        if (arrque.Count == 0)
+        {
+            Arrow_up.SetActive(false);
+        }
     }
 }

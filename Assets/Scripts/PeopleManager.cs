@@ -27,6 +27,7 @@ public class PeopleManager : MonoBehaviour
     private void Start()
     {
         CreateAll();
+        Time.timeScale = 3;
     }
     public void CreateAll()
     {
