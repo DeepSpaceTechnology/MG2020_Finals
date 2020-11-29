@@ -33,8 +33,8 @@ Transform:
   m_LocalPosition: {x: 6.45, y: 1.017, z: 3.79}
   m_LocalScale: {x: 0.51693, y: 0.51693, z: 0.51693}
   m_Children:
-  - {fileID: 7788971692692444519}
   - {fileID: 9123285474063123308}
+  - {fileID: 7788971692692444519}
   - {fileID: 6869602353922450317}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -190,7 +190,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 3740649679244621285}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!212 &9123285474063123310
 SpriteRenderer:
@@ -373,6 +373,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cloud (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5280731871153714207, guid: ad83d955bc042414eb8db52c9a69adce,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 660786340250731794, guid: ad83d955bc042414eb8db52c9a69adce,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -411,7 +416,7 @@ PrefabInstance:
     - target: {fileID: 660786340250731794, guid: ad83d955bc042414eb8db52c9a69adce,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 660786340250731794, guid: ad83d955bc042414eb8db52c9a69adce,
         type: 3}

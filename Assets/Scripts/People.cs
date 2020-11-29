@@ -27,12 +27,13 @@ public class People : MonoBehaviour
     public Color blue = new Color(0, 0.73f, 0.9f);
     public Color red = new Color(0.9f, 0, 0);
     Queue<int> arrque = new Queue<int>();//多处显示箭头时，每次出现加入队列，结束时退出队列，箭头消失时检查队列是否为空
+    Material clothMat;
     public void InitPeople(int id)
     {
         pid = id;
-        //anim = transform.GetChild(0).GetComponent<Animator>();
         anim = GetComponentInChildren<Animator>();
-        //Vector2 offset = new Vector2(Random.Range(-0.8f, 0.8f), Random.Range(-0.8f, 0.8f));
+        clothMat =new Material(transform.GetChild(0).GetComponent<SpriteRenderer>().material);
+        transform.GetChild(0).GetComponent<SpriteRenderer>().material = clothMat;
     }
     public void Move()
     {
@@ -86,28 +87,7 @@ public class People : MonoBehaviour
         Vector3 dir = new Vector3(tmp.x, 0, tmp.z);
         dir.Normalize();
         tmp = Quaternion.FromToRotation(Vector3.forward, dir).eulerAngles;
-        //Debug.Log(dir.x+" "+dir.z+"    "+ tmp);
-        //if (dir.x <= 0.5 && dir.x >= -0.5 && dir.z >= 0)   //up
-        //{
-        //    anim.SetInteger("state", 1);
-        //}
-        //else if (dir.x < 0.5 && dir.x > -0.5 && dir.z < 0)   //down
-        //{
-        //    anim.SetInteger("state", 0);
-        //}
-        //else if (dir.z <= 0.5 && dir.z >= -0.5 && dir.x >= 0)   //right
-        //{
-        //    spriteRenderer.flipX = true;
-        //    anim.SetInteger("state", 2);
-        //    anim.SetBool("s", true);
-        //}
-        //else if (dir.z < 0.5 && dir.z > -0.5 && dir.x < 0)   //left
-        //{
-        //    spriteRenderer.flipX = false;
-        //    anim.SetInteger("state", 2);
-        //    anim.SetBool("s", false);
-        //}
-        //else { Debug.Log("??"); }
+
         if (tmp.y <= 30 || tmp.y >= 330)
         {
             anim.SetInteger("state", 1);
@@ -276,8 +256,13 @@ public class People : MonoBehaviour
     }
 
 
-    public void ShowArrow(bool toRed)//参数，是否被说服要偏向红色
+    public void ShowArrow(bool toRed, bool forceUp = false)//参数，是否被说服要偏向红色
     {
+        if (forceUp)
+        {
+            StartCoroutine(SetArrow(red, true));//强制红色上升
+            return;
+        }
         if (toRed)
         {
             if (agree > 0)
@@ -323,8 +308,16 @@ public class People : MonoBehaviour
         }
     }
 
-    public void BuyPeople()
+    public void BuyPeople()//被收买
     {
+        agree = Random.Range(0.7f,0.9f);
+        conveyWant += 0.1f;
+        stubborn= Random.Range(0.7f, 0.9f);
+        ShowArrow(true,true);
+    }
 
+    public void ChangeColor()
+    {
+        
     }
 }
