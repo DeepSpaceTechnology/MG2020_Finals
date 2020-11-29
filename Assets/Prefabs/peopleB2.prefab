@@ -49,7 +49,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 443471a7d43fae5408c7f96499a648b5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
   mainTalker: 0
   talkcd: 5
   cdTimer: 0
-  isCd: 0
+  isCd: 1
   talkid: 0
   agree: 0.5
   hasBuy: 0

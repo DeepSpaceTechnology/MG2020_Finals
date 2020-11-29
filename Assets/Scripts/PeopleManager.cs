@@ -28,7 +28,7 @@ public class PeopleManager : MonoBehaviour
     private void Start()
     {
         CreateAll();
-        //Time.timeScale = 3;
+        Time.timeScale = 5;
     }
     public void CreateAll()
     {
@@ -83,15 +83,16 @@ public class PeopleManager : MonoBehaviour
             float agreesum = 0;
             if (totalAgree > 0)
             {
-                agree = Random.Range(-0.2f, 0f);
+                agree = Random.Range(-0.07f, 0f);
             }
             else if (totalAgree < 0)
             {
-                agree = Random.Range(0f, 0.2f);
+                agree = Random.Range(0f, 0.07f);
             }
             agreesum += agree;
             totalAgree = agreesum / totalNum;
             go.GetComponent<People>().agree = agree;
+            go.GetComponent<People>().ChangeColor();
             pList.Add(go.GetComponent<People>());
             go.GetComponent<People>().cdTimer = Random.Range(2f,5f);
         }
@@ -107,6 +108,18 @@ public class PeopleManager : MonoBehaviour
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            if (Time.timeScale ==1)
+            {
+                Time.timeScale = 5;
+            }
+            else
+            {
+                Time.timeScale = 1;
+            }
+        }
+
         float agreesum = 0;
         int agsum = 0;
         int dissum = 0;

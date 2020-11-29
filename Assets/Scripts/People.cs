@@ -34,6 +34,7 @@ public class People : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         clothMat =new Material(transform.GetChild(0).GetComponent<SpriteRenderer>().material);
         transform.GetChild(0).GetComponent<SpriteRenderer>().material = clothMat;
+
     }
     public void Move()
     {
@@ -116,30 +117,30 @@ public class People : MonoBehaviour
         float tickadd=1f;//防止同化过于严重
         if(othera>0 && agree>0 && PeopleManager.instance.agL > 0.55f)
         {
-            tickadd = 0.4f;
+            tickadd = 0.2f;
         }
         if (othera < 0 && agree < 0 && PeopleManager.instance.agL < 0.45f)
         {
-            tickadd = 0.4f;
-        }
-        //防止过高值出现
-        if(agree>0.6 && otherAgree > 0)
-        {
-            tickadd = 0.5f;
-        }
-        if (agree < -0.6 && otherAgree < 0)
-        {
-            tickadd = 0.5f;
-        }
-        if (agree > 0.8 && otherAgree > 0)
-        {
             tickadd = 0.2f;
         }
-        if (agree < -0.8 && otherAgree < 0)
+        float tickadd2 = 1f;//防止过高值出现
+        if (agree>0.5 && otherAgree > 0)
         {
-            tickadd = 0.2f;
+            tickadd2 = 0.6f;
         }
-        agree += (1 - stubborn) * otherPeo.conveyStr * othera * tickadd;
+        if (agree < -0.5 && otherAgree < 0)
+        {
+            tickadd2 = 0.6f;
+        }
+        if (agree > 0.7 && otherAgree > 0)
+        {
+            tickadd2 = 0.5f;
+        }
+        if (agree < -0.7 && otherAgree < 0)
+        {
+            tickadd2 = 0.5f;
+        }
+        agree += (1 - stubborn) * otherPeo.conveyStr * othera * tickadd* tickadd2;
         if (agree > 1f)
         {
             agree = 1f;
@@ -153,7 +154,7 @@ public class People : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isCd) { return; }
+        if (!other.CompareTag("people") || isCd) { return; }
 
         People tmp = other.gameObject.GetComponent<People>();
 
@@ -258,6 +259,7 @@ public class People : MonoBehaviour
 
     public void ShowArrow(bool toRed, bool forceUp = false)//参数，是否被说服要偏向红色
     {
+        ChangeColor();//调用箭头的地方一定会设计到衣服颜色的改变
         if (forceUp)
         {
             StartCoroutine(SetArrow(red, true));//强制红色上升
@@ -310,7 +312,8 @@ public class People : MonoBehaviour
 
     public void BuyPeople()//被收买
     {
-        agree = Random.Range(0.7f,0.9f);
+        hasBuy = true;
+        agree = Random.Range(0.6f,0.8f);
         conveyWant += 0.1f;
         stubborn= Random.Range(0.7f, 0.9f);
         ShowArrow(true,true);
@@ -318,6 +321,15 @@ public class People : MonoBehaviour
 
     public void ChangeColor()
     {
-        
+        if (agree > 0)
+        {
+            clothMat.SetFloat("_Hue", 0.42f);
+            clothMat.SetFloat("_Saturation", Mathf.Clamp(1.875f*agree,0,1.5f));           
+        }
+        else
+        {
+            clothMat.SetFloat("_Hue", 0f);
+            clothMat.SetFloat("_Saturation", Mathf.Clamp(1.875f * -agree, 0, 1.5f));
+        }
     }
 }
