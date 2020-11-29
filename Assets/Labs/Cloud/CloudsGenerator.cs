@@ -34,8 +34,10 @@ public class CloudsGenerator : MonoBehaviour
 
     private void FixedUpdate()
     {
-        RenderCloudMap();
-        
+        if (_points.Count > 0)
+        {
+            RenderCloudMap();
+        }        
     }
 
     public void RenderCloudMap()

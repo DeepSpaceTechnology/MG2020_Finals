@@ -28,7 +28,7 @@ public class PeopleManager : MonoBehaviour
     private void Start()
     {
         CreateAll();
-        Time.timeScale = 5;
+        Time.timeScale = 1;
     }
     public void CreateAll()
     {
@@ -59,8 +59,8 @@ public class PeopleManager : MonoBehaviour
             GameObject go = Instantiate(peoObj[type], CalPosByid(++curNum), Quaternion.identity);
             if (Cloudobj != null)
             {
-                go.GetComponentInChildren<ShadowOutShape>().generator = Cloudobj;
-                Cloudobj._points.Add(go.GetComponent<Point>());
+                //go.GetComponentInChildren<ShadowOutShape>().generator = Cloudobj;
+                //Cloudobj._points.Add(go.GetComponent<Point>());
             }
             go.GetComponent<People>().type = type;
             switch (type)
@@ -83,11 +83,11 @@ public class PeopleManager : MonoBehaviour
             float agreesum = 0;
             if (totalAgree > 0)
             {
-                agree = Random.Range(-0.07f, 0f);
+                agree = Random.Range(-0.1f, 0f);
             }
             else if (totalAgree < 0)
             {
-                agree = Random.Range(0f, 0.07f);
+                agree = Random.Range(0f, 0.1f);
             }
             agreesum += agree;
             totalAgree = agreesum / totalNum;
@@ -95,6 +95,7 @@ public class PeopleManager : MonoBehaviour
             go.GetComponent<People>().ChangeColor();
             pList.Add(go.GetComponent<People>());
             go.GetComponent<People>().cdTimer = Random.Range(2f,5f);
+            go.name += "-" + curNum;
         }
     }
     //根据人物编号计算位置
@@ -103,7 +104,7 @@ public class PeopleManager : MonoBehaviour
         float x = (id - 1) % countx * (mapx / countx) + (mapx / countx) / 2;
         float z = (int)((id - 1) / countx) * (mapz / countz) + (mapz / countz) / 2;
         Vector3 offset = new Vector3(Random.Range(-0.8f, 0.8f), 0, Random.Range(-0.8f, 0.8f));
-        Vector3 res = new Vector3(x, peoObj[0].transform.position.y, z) + offset;
+        Vector3 res = new Vector3(x, peoObj[0].transform.position.y, z) + offset-new Vector3(7,0,4);
         return res;
     }
     private void Update()

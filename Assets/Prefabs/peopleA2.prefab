@@ -111,6 +111,7 @@ MonoBehaviour:
   talkid: 0
   agree: 0.5
   hasBuy: 0
+  hasShadow: 0
   money: 10
   anim: {fileID: 9123285474063123311}
   spriteRenderer: {fileID: 9123285474063123310}
@@ -141,7 +142,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3740649679244621304}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.8
@@ -158,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc0649648009de4eaa1a1833973ce46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: -29
+  radius: 1
   strength: 1
 --- !u!1 &9123285474063123309
 GameObject:
@@ -186,7 +187,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9123285474063123309}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 3740649679244621285}
@@ -285,12 +286,12 @@ PrefabInstance:
     - target: {fileID: 8585797936544097424, guid: 488077f6b11e5ff489f4bc4996dfcb01,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.526
+      value: 0.562
       objectReference: {fileID: 0}
     - target: {fileID: 8585797936544097424, guid: 488077f6b11e5ff489f4bc4996dfcb01,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.398
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 8585797936544097424, guid: 488077f6b11e5ff489f4bc4996dfcb01,
         type: 3}

@@ -18,7 +18,8 @@ public class UIManager : MonoBehaviour
     }
     void updateTotalPtr()
     {
-        float targetx = 1033 * PeopleManager.instance.totalAgree;
+        float tmp = (PeopleManager.instance.agCount - PeopleManager.instance.disCount) / (float)(PeopleManager.instance.totalNum);
+        float targetx = 620 * tmp;
         totalPtr.localPosition = new Vector3(Mathf.Lerp(totalPtr.localPosition.x,targetx,Time.deltaTime*5f), 
             totalPtr.localPosition.y, totalPtr.localPosition.z);
     }

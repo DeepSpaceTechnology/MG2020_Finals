@@ -26,7 +26,7 @@ void DrawCircular(float2 pos,float radius)
 {
     for (int a=0;a<360;a++)
     {
-       for(int r=0;r<radius*1.2;r++)
+       for(int r=0;r<radius*1.05;r++)
        {
            float2 curPos = float2(pos.x+r*cos(a),pos.y+r*sin(a));
            if(r<radius)
@@ -45,17 +45,17 @@ void DrawCircular(float2 pos,float radius)
 
            }else
            {
-               DrawPixel(curPos,float4(.25,.25,.25,.25));
+               DrawPixel(curPos,float4(.1,.1,.1,.1));
            
-               DrawPixel(curPos+float2(1,0),float4(.1,.1,.1,.1));
-               DrawPixel(curPos+float2(0,1),float4(.1,.1,.1,.1));
-               DrawPixel(curPos+float2(-1,0),float4(.1,.1,.1,.1));
-               DrawPixel(curPos+float2(0,-1),float4(.1,.1,.1,.1));
+               DrawPixel(curPos+float2(1,0),float4(.05,.05,.05,.05));
+               DrawPixel(curPos+float2(0,1), float4(.05, .05, .05, .05));
+               DrawPixel(curPos+float2(-1,0),float4(.05,.05,.05,.05));
+               DrawPixel(curPos+float2(0,-1),float4(.05,.05,.05,.05));
            
-               DrawPixel(curPos+float2(1,1),float4(.01,.01,.01,.01));
-               DrawPixel(curPos+float2(-1,1),float4(.01,.01,.01,.01));
-               DrawPixel(curPos+float2(1,-1),float4(.01,.01,.01,.01));
-               DrawPixel(curPos+float2(-1,-1),float4(.01,.01,.01,.01));
+               DrawPixel(curPos+float2(1,1), float4(.05, .05, .05, .05));
+               DrawPixel(curPos+float2(-1,1), float4(.05, .05, .05, .05));
+               DrawPixel(curPos+float2(1,-1), float4(.05, .05, .05, .05));
+               DrawPixel(curPos+float2(-1,-1), float4(.05, .05, .05, .05));
 
            }
 
@@ -84,7 +84,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
         meta += tmp > 0 ? clamp(2/tmp,0,1) : 0;
         transparent = max(tmp > 0 ? dataBuffer[i].strength : 0, transparent) ;
     }
-    meta = meta > 0.1 ? 1 : 0;
+    meta = meta > 0.2 ? 1 : 0;
     float4 col = lerp(float4(0,0,0,0), float4(1,1,1,1),smoothstep(0.0, 0.001, final))
                     +lerp(float4(0,0,0,0), float4(1,1,1,1), smoothstep(0.0, 0.001, meta));
     Result[id.xy] = float4(col.rgb,transparent);

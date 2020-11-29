@@ -17,7 +17,8 @@ public class People : MonoBehaviour
     public bool isCd = false;
     public int talkid = 0;
     public float agree = 0.5f;
-    public bool hasBuy = false;
+    public bool hasBuy = false;//被收买
+    public bool hasShadow = false;
     public int money = 10;
     Vector3 target;
     People otherPeo;
@@ -48,8 +49,8 @@ public class People : MonoBehaviour
         //到达目标，设置新目标点
         if (target == Vector3.zero || Vector3.Distance(transform.position, target) < 0.2f)
         {
-            target = new Vector3(Random.Range(0.5f, PeopleManager.instance.mapx - 0.5f), transform.position.y,
-                Random.Range(0.5f, PeopleManager.instance.mapz - 0.5f));
+            target = new Vector3(Random.Range(0.5f, PeopleManager.instance.mapx - 0.5f)-7, transform.position.y,
+                Random.Range(0.5f, PeopleManager.instance.mapz - 0.5f)-4);
             //Debug.Log("到目标点了");
             SetAnimator(target);
         }
@@ -113,7 +114,7 @@ public class People : MonoBehaviour
     {
         if (otherPeo == null) return;
         int othera = otherAgree > 0 ? 1 : -1;
-        ShowArrow(otherAgree > 0);
+        
         float tickadd=1f;//防止同化过于严重
         if(othera>0 && agree>0 && PeopleManager.instance.agL > 0.55f)
         {
@@ -126,21 +127,22 @@ public class People : MonoBehaviour
         float tickadd2 = 1f;//防止过高值出现
         if (agree>0.5 && otherAgree > 0)
         {
-            tickadd2 = 0.6f;
+            tickadd2 = 0.5f;
         }
         if (agree < -0.5 && otherAgree < 0)
         {
-            tickadd2 = 0.6f;
+            tickadd2 = 0.5f;
         }
         if (agree > 0.7 && otherAgree > 0)
         {
-            tickadd2 = 0.5f;
+            tickadd2 = 0.3f;
         }
         if (agree < -0.7 && otherAgree < 0)
         {
-            tickadd2 = 0.5f;
+            tickadd2 = 0.3f;
         }
         agree += (1 - stubborn) * otherPeo.conveyStr * othera * tickadd* tickadd2;
+        ShowArrow(otherAgree > 0);
         if (agree > 1f)
         {
             agree = 1f;
@@ -148,6 +150,16 @@ public class People : MonoBehaviour
         else if (agree < -1f)
         {
             agree = -1f;
+        } 
+        //产生阴影
+        if (otherPeo.hasShadow && otherAgree > 0 && agree > 0 && hasShadow==false)
+        {
+            ShowShadow();
+        }
+        //解除阴影
+        if(hasShadow && agree < 0)
+        {
+            ShowShadow(true);
         }
     }
 
@@ -310,15 +322,29 @@ public class People : MonoBehaviour
         }
     }
 
+    [ContextMenu("buy")]
     public void BuyPeople()//被收买
     {
         hasBuy = true;
         agree = Random.Range(0.6f,0.8f);
         conveyWant += 0.1f;
-        stubborn= Random.Range(0.7f, 0.9f);
+        stubborn= Random.Range(0.8f, 0.9f);
         ShowArrow(true,true);
+        ShowShadow();
     }
 
+    public void Buyagree()//信息炸弹
+    {
+
+    }
+    public void Buystubborn()//律师函
+    {
+
+    }
+    public void Buywant()//饭圈
+    {
+
+    }
     public void ChangeColor()
     {
         if (agree > 0)
@@ -332,4 +358,32 @@ public class People : MonoBehaviour
             clothMat.SetFloat("_Saturation", Mathf.Clamp(1.875f * -agree, 0, 1.5f));
         }
     }
+    public void ShowShadow(bool hide = false)
+    {
+        if (!hide)
+        {
+            GetComponentInChildren<Point>().radius = -5;
+            PeopleManager.instance.Cloudobj._points.Add(GetComponent<Point>());
+            StartCoroutine(FadeInShadow());
+            hasShadow = true;
+        }
+        else
+        {
+            PeopleManager.instance.Cloudobj._points.Remove(GetComponent<Point>());
+            hasShadow = false;
+        }
+    }
+
+    IEnumerator FadeInShadow()
+    {
+        float org = GetComponentInChildren<Point>().radius;
+        for (int i = 1; i <= 10; i++)
+        {
+            GetComponentInChildren<Point>().radius=Mathf.Lerp(org,1,i/10f);
+            Debug.Log(Mathf.Lerp(org, 1, i / 10f));
+            yield return new WaitForSeconds(0.15f);
+        }
+        GetComponentInChildren<Point>().radius = 1f;
+    }
+
 }
