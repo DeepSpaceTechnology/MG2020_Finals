@@ -21,8 +21,10 @@ public class PeopleManager : MonoBehaviour
     public int disCount = 0;
     public float agL = 0f;
     public CloudsGenerator Cloudobj;
-    public float GetMoneyCd = 5f;
-    public float timer = 0;
+    public float BaseMoneyCd = 1f;//基础金钱cd
+    public float Basetimer = 0;
+    public float PeoMoneyCd = 5f;//人数赚钱cd
+    public float Peotimer = 0;
     private void Awake()
     {
         instance = this;
@@ -81,7 +83,7 @@ public class PeopleManager : MonoBehaviour
                     break;
             }
 
-            float agree = Random.Range(-0.6f, 0.1f);
+            float agree = Random.Range(-0.5f, 0.1f);
             float agreesum = 0;
             //if (totalAgree >= 0)
             //{
@@ -127,7 +129,7 @@ public class PeopleManager : MonoBehaviour
         float agreesum = 0;
         int agsum = 0;
         int dissum = 0;
-        int m = 5;//本次资金保底
+        int m = 0;//本次人数赚取
         foreach (People p in pList)
         {
             agreesum += p.agree;
@@ -151,14 +153,42 @@ public class PeopleManager : MonoBehaviour
         agL = (float)(agCount) / totalNum;
 
         //赚钱
-        if (timer < GetMoneyCd)
+        if (Basetimer < BaseMoneyCd)
         {
-            timer += Time.deltaTime;
+            Basetimer += Time.deltaTime;
         }
         else
         {
-            timer = 0;
-            GameRoot.instance.money += m;
+            Basetimer = 0;
+            GameRoot.instance.money += 2;
+            UIMgr.instance.showMoney.UpdateMoney();
+        }
+        if (Peotimer < PeoMoneyCd)
+        {
+            Peotimer += Time.deltaTime;
+        }
+        else
+        {
+            Peotimer = 0;
+            GameRoot.instance.money += Mathf.Clamp(m,0,25);
+            List<Vector3> clist = new List<Vector3>();
+            foreach (People p in pList)
+            {
+                if (p.agree > 0)
+                {
+                    if (p.hasShadow)
+                    {
+                        clist.Add(Camera.main.WorldToScreenPoint(p.transform.position + new Vector3(-0.07f, 0.7f, 0)));
+                        clist.Add(Camera.main.WorldToScreenPoint(p.transform.position + new Vector3(0.07f, 0.7f, 0)));
+                    }
+                    else
+                    {
+                        clist.Add(Camera.main.WorldToScreenPoint(p.transform.position + new Vector3(0, 0.7f, 0)));
+                    }
+                    
+                }
+            }
+            UIMgr.instance.ShowCoin(clist);
             UIMgr.instance.showMoney.UpdateMoney();
         }
     }

@@ -33,7 +33,9 @@ public class UIMgr : MonoBehaviour
     public Vector3 needmoneyOffset;
     public GameObject go_talk;          //收买后的气泡
     public Vector3 talkOffset;
-
+    //金币
+    public GameObject coinPrefab;
+    public Transform coinRoot;
     private void Awake()
     {
         if (instance == null)
@@ -107,7 +109,7 @@ public class UIMgr : MonoBehaviour
                 {
                     Lawyerletter();
                 }
-                else if (uiState == 4 )     //饭圈文化
+                else if (uiState == 4)     //饭圈文化
                 {
                     FansClub();
                 }
@@ -190,7 +192,7 @@ public class UIMgr : MonoBehaviour
         else if (uiState == 2)      //信息炸弹
         {
             mouseChange.isScope = true;
-            
+
             if (isOnPeople())
             {
                 mouseChange.index = 1;
@@ -241,14 +243,14 @@ public class UIMgr : MonoBehaviour
             GameRoot.instance.money -= curAlwaryPeople.money;
             showMoney.UpdateMoney();
             curAlwaryPeople.BuyPeople();
-            AfterBuyShow abs= Instantiate(go_talk, uiRoot1).GetComponent<AfterBuyShow>();
+            AfterBuyShow abs = Instantiate(go_talk, uiRoot1).GetComponent<AfterBuyShow>();
             string tmpstr = GameRoot.instance.GetRamTalkByType(curAlwaryPeople.type);
             abs.SetTalk(tmpstr, curAlwaryPeople.transform, talkOffset);
             abs.transform.position = Camera.main.WorldToScreenPoint(curAlwaryPeople.transform.position + talkOffset);
         }
         else
         {
-            Debug.Log("资金不足");
+            Debug.Log("资金不足-收买");
         }
         uiState = 0;
         needMoney.gameObject.SetActive(false);
@@ -267,7 +269,7 @@ public class UIMgr : MonoBehaviour
     {
         if (GameRoot.instance.money < GameRoot.instance.skillPrice[1])
         {
-            Debug.Log("资金不足");
+            Debug.Log("资金不足-轰炸" + " " + GameRoot.instance.money + " < " + GameRoot.instance.skillPrice[1]);
         }
         else {
             Debug.Log("消息轰炸");
@@ -276,16 +278,16 @@ public class UIMgr : MonoBehaviour
 
             List<People> plist = new List<People>();
             Vector3 r = new Vector3(0, -0.5f, 0.5f);
-            if (curAlwaryPeople==null) { r = Vector3.zero; }
+            if (curAlwaryPeople == null) { r = Vector3.zero; }
             //Collider[] colliders = Physics.OverlapSphere(mousePosInWorld + r, 0.6f, LayerMask.GetMask("people"));
             //Instantiate(tmpSphere, mousePosInWorld + r, Quaternion.identity);
-            
-            Collider[] colliders = Physics.OverlapBox(mousePosInWorld + r, new Vector3(0.6f,1f,1f),Quaternion.identity,LayerMask.GetMask("people"));
+
+            Collider[] colliders = Physics.OverlapBox(mousePosInWorld + r, new Vector3(0.6f, 1f, 1f), Quaternion.identity, LayerMask.GetMask("people"));
             foreach (Collider co in colliders)
             {
                 plist.Add(co.gameObject.GetComponent<People>());
             }
-            Debug.Log("list:  "+plist.Count);
+            //Debug.Log("list:  "+plist.Count);
             foreach (People p in plist)
             {
                 p.InfoBomb();
@@ -293,7 +295,7 @@ public class UIMgr : MonoBehaviour
         }
 
         uiState = 0;
-        mouseChange.isScope=false;
+        mouseChange.isScope = false;
     }
 
 
@@ -316,7 +318,7 @@ public class UIMgr : MonoBehaviour
         }
         else
         {
-            Debug.Log("资金不足");
+            Debug.Log("资金不足 律师函" + " " + GameRoot.instance.money + " < " + GameRoot.instance.skillPrice[2]);
         }
         uiState = 0;
         needMoney.gameObject.SetActive(false);
@@ -335,7 +337,7 @@ public class UIMgr : MonoBehaviour
     public void FansClub() {
         if (GameRoot.instance.money < GameRoot.instance.skillPrice[3])
         {
-            Debug.Log("资金不足");
+            Debug.Log("资金不足-狂热" + " " + GameRoot.instance.money + " < " + GameRoot.instance.skillPrice[3]);
         }
         else
         {
@@ -364,4 +366,27 @@ public class UIMgr : MonoBehaviour
         mouseChange.isScope = false;
     }
 
+
+    //#######>>>>>>>>==== 金币掉落 =====<<<<<<<<#########
+    public void ShowCoin(List<Vector3> clist)
+    {
+        foreach (Vector3 i in clist)
+        {
+            GameObject go = Instantiate(coinPrefab, coinRoot);
+            go.transform.position = i;
+        }
+        if (clist.Count > 0)
+        {
+            StartCoroutine(DelCoin());
+        }
+    }
+    IEnumerator DelCoin()
+    {
+        yield return new WaitForSeconds(1f);
+        for (int i = 0; i < coinRoot.childCount; i++)
+        {
+            Destroy(coinRoot.GetChild(i).gameObject);
+        }
+
+    }
 }

@@ -73,7 +73,7 @@ public class PeoInfoCard : MonoBehaviour
     {
         
         bool preIsAgree = isAgree;
-        Debug.Log("UpdateAgree "+_agree);
+        //Debug.Log("UpdateAgree "+_agree);
         if (_agree >= 0)
         {
             isAgree = true;

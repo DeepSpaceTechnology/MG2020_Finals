@@ -17,6 +17,7 @@ public class People : MonoBehaviour
     public bool isCd = false;
     public int talkid = 0;
     public float agree = 0.5f;
+    public float oldagree = 0f;
     public bool hasBuy = false;//被收买
     public bool hasShadow = false;
     public int money = 10;
@@ -141,9 +142,10 @@ public class People : MonoBehaviour
         {
             tickadd2 = 0.2f;
         }
-        agree += (1 - stubborn) * otherPeo.conveyStr * othera * tickadd* tickadd2;
-
+        oldagree = agree;
         ShowArrow(otherAgree > 0);
+        agree += (1 - stubborn) * otherPeo.conveyStr * othera * tickadd* tickadd2;
+        ChangeColor();
         if (agree > 1f)
         {
             agree = 1f;
@@ -273,7 +275,6 @@ public class People : MonoBehaviour
 
     public void ShowArrow(bool toRed, bool forceUp = false)//参数，是否被说服要偏向红色
     {
-        ChangeColor();//调用箭头的地方一定会设计到衣服颜色的改变
         if (forceUp)
         {
             StartCoroutine(SetArrow(red, true));//强制红色上升
@@ -337,7 +338,12 @@ public class People : MonoBehaviour
         {
             agree += Random.Range(0.1f, 0.2f);
         }
+        if (stubborn < 0.5f)
+        {
+            stubborn = Random.Range(0.8f, 0.9f);
+        }
         if (agree > 1) agree = 1;
+        ChangeColor();
         UIMgr.instance.OverTalkUpdate(pid, pid);
         ShowArrow(true,true);
         ShowShadow();
@@ -345,9 +351,10 @@ public class People : MonoBehaviour
 
     public void InfoBomb()//信息炸弹
     {
-        agree += Random.Range(0.2f, 0.3f);
+        agree += Random.Range(0.1f, 0.2f);
 
         if (agree > 1) agree = 1;
+        ChangeColor();
         UIMgr.instance.OverTalkUpdate(pid, pid);
         ShowArrow(true, true);
     }
@@ -366,8 +373,10 @@ public class People : MonoBehaviour
             stubborn = Random.Range(0.1f, 0.2f);
         }
         StartCoroutine(DelSpeed());
-        ChangeColor();
+        ShowArrow(true);
         if (agree > 1) agree = 1;
+        ChangeColor();
+        ChangeColor();
         UIMgr.instance.OverTalkUpdate(pid, pid);
     }
 
@@ -376,15 +385,20 @@ public class People : MonoBehaviour
         if (agree > 0)
         {
             agree += Random.Range(0.05f, 0.1f);
-            stubborn = Random.Range(0.4f, 0.6f);
+            if (stubborn < 0.5f)
+            {
+                stubborn = Random.Range(0.5f, 0.6f);
+            }
             conveyStr += Random.Range(0.1f, 0.2f);
             conveyWant += Random.Range(0.1f, 0.3f);
             talkcd = 3f;
         }
         StartCoroutine(AddSpeed());
         if (agree > 1) agree = 1;
+        ChangeColor();
         if (conveyStr > 1) conveyStr = 1;
         if (conveyWant > 1) conveyWant = 1;
+        ShowArrow(true, true);
         UIMgr.instance.OverTalkUpdate(pid, pid);
     }
 

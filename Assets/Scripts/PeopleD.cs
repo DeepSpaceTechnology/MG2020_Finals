@@ -9,7 +9,7 @@ public class PeopleD : People
         base.InitPeople(id);
         conveyWant = Random.Range(0.8f, 0.9f);
         conveyStr = Random.Range(0.8f, 0.9f);
-        stubborn = Random.Range(0.7f, 0.8f);
+        stubborn = Random.Range(0.8f, 0.9f);
         money = Random.Range(200, 300);
     }
 }

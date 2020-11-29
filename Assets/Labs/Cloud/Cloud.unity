@@ -467,6 +467,41 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
+--- !u!1 &1236338090
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1236338091}
+  m_Layer: 5
+  m_Name: CoinRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1236338091
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236338090}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4757945148580871057}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1373766636
 GameObject:
   m_ObjectHideFlags: 0
@@ -1539,7 +1574,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -656, y: -263}
+  m_AnchoredPosition: {x: -571, y: -456}
   m_SizeDelta: {x: 250, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4757945147106007271
@@ -2402,6 +2437,9 @@ MonoBehaviour:
   needmoneyOffset: {x: 0.5, y: 0, z: 0}
   go_talk: {fileID: 7899796345226576848, guid: 1fe9441354ad192409a4bdc94936157e, type: 3}
   talkOffset: {x: -0.8, y: -0.8, z: 0}
+  coinPrefab: {fileID: 2930380018460349280, guid: fa9246e16fba0d24aac1597d04707685,
+    type: 3}
+  coinRoot: {fileID: 1236338091}
 --- !u!114 &4757945148072256094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2966,6 +3004,7 @@ RectTransform:
   m_Children:
   - {fileID: 7850592472910628693}
   - {fileID: 4757945148324769043}
+  - {fileID: 1236338091}
   m_Father: {fileID: 4757945148793464468}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2995,7 +3034,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 84, y: -325.99976}
+  m_AnchoredPosition: {x: 84, y: -443}
   m_SizeDelta: {x: 1000, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4757945148638817669
@@ -3730,8 +3769,10 @@ MonoBehaviour:
   disCount: 0
   agL: 0
   Cloudobj: {fileID: 1373766641}
-  GetMoneyCd: 5
-  timer: 0
+  BaseMoneyCd: 1
+  Basetimer: 0
+  PeoMoneyCd: 5
+  Peotimer: 0
 --- !u!1 &8741461535688990959
 GameObject:
   m_ObjectHideFlags: 0
@@ -3762,5 +3803,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f5e68037bf3cb41ac5ad7d1bff0585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  money: 999
-  skillPrice: 00000000320000001e0000003c000000
+  money: 300
+  skillPrice: 00000000280000001e00000032000000
