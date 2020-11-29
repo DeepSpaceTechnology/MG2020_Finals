@@ -245,14 +245,14 @@ public class People : MonoBehaviour
 
         SetAnimator(Vector3.one, true);
         otherPeo.SetAnimator(Vector3.one, true);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(2f);
         //支持率数值计算
         float tmpAgree = agree;
         ChangeSelf(otherPeo.agree);
         otherPeo.ChangeSelf(tmpAgree);
 
-        yield return new WaitForSeconds(2f);
         //Debug.Log(pid + "  " + otherPeo.pid + "  结束交流");
+        UIMgr.instance.OverTalkUpdate(pid, otherPeo.pid);
         otherPeo.OverTalk();
         OverTalk();
     }
@@ -326,25 +326,62 @@ public class People : MonoBehaviour
     public void BuyPeople()//被收买
     {
         hasBuy = true;
-        agree = Random.Range(0.6f,0.8f);
-        conveyWant += 0.1f;
-        stubborn= Random.Range(0.8f, 0.9f);
+        if (agree < 0.5)
+        {
+            agree = Random.Range(0.5f, 0.7f);
+        }
+        else
+        {
+            agree += Random.Range(0.1f, 0.2f);
+        }
+        if (agree > 1) agree = 1;
+        UIMgr.instance.OverTalkUpdate(pid, pid);
         ShowArrow(true,true);
         ShowShadow();
     }
 
-    public void Buyagree()//信息炸弹
+    public void InfoBomb()//信息炸弹
     {
+        agree += Random.Range(0.2f, 0.3f);
 
+        if (agree > 1) agree = 1;
+        UIMgr.instance.OverTalkUpdate(pid, pid);
     }
-    public void Buystubborn()//律师函
+
+    public void Lawyerletter()//律师函
     {
+        if (agree < 0)
+        {
+            agree = -Random.Range(0.01f, 0.08f);
+            stubborn = Random.Range(0.1f, 0.2f);
+            conveyStr = Random.Range(0.1f, 0.2f);
+        }
+        else
+        {
+            agree += Random.Range(0.1f, 0.2f);
+            stubborn = Random.Range(0.1f, 0.2f);
+        }
 
+        if (agree > 1) agree = 1;
+        UIMgr.instance.OverTalkUpdate(pid, pid);
     }
-    public void Buywant()//饭圈
+
+    public void FansClub()
     {
+        if (agree > 0)
+        {
+            agree += Random.Range(0.05f, 0.1f);
+            stubborn = Random.Range(0.4f, 0.6f);
+            conveyStr += Random.Range(0.1f, 0.3f);
+            conveyWant += Random.Range(0.1f, 0.3f);
+            talkcd = 3f;
+        }
 
+        if (agree > 1) agree = 1;
+        UIMgr.instance.OverTalkUpdate(pid, pid);
     }
+
+
     public void ChangeColor()
     {
         if (agree > 0)
@@ -380,7 +417,6 @@ public class People : MonoBehaviour
         for (int i = 1; i <= 10; i++)
         {
             GetComponentInChildren<Point>().radius=Mathf.Lerp(org,1,i/10f);
-            Debug.Log(Mathf.Lerp(org, 1, i / 10f));
             yield return new WaitForSeconds(0.15f);
         }
         GetComponentInChildren<Point>().radius = 1f;
