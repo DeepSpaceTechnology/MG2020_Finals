@@ -28,6 +28,7 @@
           <e p="PeopleC.cs" t="Include" />
           <e p="PeopleD.cs" t="Include" />
           <e p="PeopleManager.cs" t="Include" />
+          <e p="UIManager.cs" t="Include" />
           <e p="UIMgr.cs" t="Include" />
         </e>
         <e p="Shaders" t="Include">
