@@ -9,6 +9,7 @@ public class PeoInfoCard : MonoBehaviour
     public Text t_detail;
     public Text t_viewpoint;
     public Text t_percent;
+    public Text t_Sign;
 
     public Color colAgree;
     public Color colDisAgree;
@@ -23,7 +24,8 @@ public class PeoInfoCard : MonoBehaviour
     public bool isAgree = true;
 
 
-    public void SetInfo(int index,float _agree) {
+    public void SetInfo(int index, float _agree)
+    {
         StopCoroutine(JumpNumber());
         isJumping = false;
 
@@ -54,26 +56,29 @@ public class PeoInfoCard : MonoBehaviour
             t_viewpoint.text = "支持";
             t_viewpoint.color = colAgree;
             t_percent.color = colAgree;
+            t_Sign.color = colAgree;
             isAgree = true;
         }
-        else {
+        else
+        {
             t_viewpoint.text = "反对";
             t_viewpoint.color = colDisAgree;
             t_percent.color = colDisAgree;
+            t_Sign.color = colDisAgree;
             _agree = -_agree;
             isAgree = false;
         }
 
-        int num=(int)(_agree * 100);
+        int num = (int)(_agree * 100);
         t_percent.text = num.ToString();
         curAgree = num;
     }
 
     public void UpdateAgree(float _agree)
     {
-        
+
         bool preIsAgree = isAgree;
-        //Debug.Log("UpdateAgree "+_agree);
+        Debug.Log("UpdateAgree " + _agree);
         if (_agree >= 0)
         {
             isAgree = true;
@@ -85,12 +90,14 @@ public class PeoInfoCard : MonoBehaviour
         }
         int newAgree = (int)(_agree * 100);
 
-        if (!gameObject.activeSelf) {       //若卡片没显示
+        if (!gameObject.activeSelf)
+        {       //若卡片没显示
             if (_agree >= 0)
             {
                 t_viewpoint.text = "支持";
                 t_viewpoint.color = colAgree;
                 t_percent.color = colAgree;
+                t_Sign.color = colAgree;
                 isAgree = true;
             }
             else
@@ -98,6 +105,7 @@ public class PeoInfoCard : MonoBehaviour
                 t_viewpoint.text = "反对";
                 t_viewpoint.color = colDisAgree;
                 t_percent.color = colDisAgree;
+                t_Sign.color = colDisAgree;
                 _agree = -_agree;
                 isAgree = false;
             }
@@ -127,17 +135,21 @@ public class PeoInfoCard : MonoBehaviour
                 StartCoroutine(JumpNumber());
             }
         }
-        else {
+        else
+        {
             if (isAgree)
             {
                 t_viewpoint.text = "支持";
                 t_viewpoint.color = colAgree;
                 t_percent.color = colAgree;
+                t_Sign.color = colAgree;
             }
-            else {
+            else
+            {
                 t_viewpoint.text = "反对";
                 t_viewpoint.color = colDisAgree;
                 t_percent.color = colDisAgree;
+                t_Sign.color = colDisAgree;
             }
 
             if (!isJumping)
@@ -158,23 +170,28 @@ public class PeoInfoCard : MonoBehaviour
         }
     }
 
-    IEnumerator JumpNumber() {
+    IEnumerator JumpNumber()
+    {
         bool isAdd = true;
         if (end < start) { isAdd = false; }
         isJumping = true;
         int delta = (end - start) / jump;
-        if (delta == 0 && ((end - start) > 0)) {
+        if (delta == 0 && ((end - start) > 0))
+        {
             delta = 1;
-        } else if (delta == 0 && ((end - start) < 0)) {
+        }
+        else if (delta == 0 && ((end - start) < 0))
+        {
             delta = -1;
         }
-        
+
         result = start;
         for (int i = 0; i < jump; i++)
         {
             //Debug.Log(result);
             result += delta;
-            if (isAdd&&result > end) {
+            if (isAdd && result > end)
+            {
                 break;
             }
             if (!isAdd && result < end)

@@ -18,7 +18,14 @@ public class UIMgr : MonoBehaviour
     People curAlwaryPeople;     //持续射线打到的人
     Vector3 mousePosInWorld;
 
-    public RectTransform totalPtr;//平均支持指针
+    //top指针
+    public RectTransform totalPtr;  //平均支持指针
+    public Text totalPtrText;
+    public Image topSign;
+    public Sprite redtop;
+    public Sprite buletop;
+
+    public LeftTip leftTip;
 
     public People curCardPeople;        //当前信息卡显示的people的引用
     public PeoInfoCard peoInfoCard;
@@ -33,9 +40,14 @@ public class UIMgr : MonoBehaviour
     public Vector3 needmoneyOffset;
     public GameObject go_talk;          //收买后的气泡
     public Vector3 talkOffset;
+
+    public GameObject cancelTip;        //取消技能提示
+    public NewsRoll newsRoll;
+
     //金币
     public GameObject coinPrefab;
     public Transform coinRoot;
+
     private void Awake()
     {
         if (instance == null)
@@ -50,12 +62,20 @@ public class UIMgr : MonoBehaviour
         ClearAllSkillWnd();
         showMoney.UpdateMoney();
     }
+
     void UpdateTotalPtr()
     {
         float tmp = (PeopleManager.instance.agCount - PeopleManager.instance.disCount) / (float)(PeopleManager.instance.totalNum);
-        float targetx = 620 * tmp;
+        float targetx = 500 * tmp;
         totalPtr.localPosition = new Vector3(Mathf.Lerp(totalPtr.localPosition.x, targetx, Time.deltaTime * 5f),
             totalPtr.localPosition.y, totalPtr.localPosition.z);
+        int num = (int)(tmp * 100);
+        if (num < 0) {
+            topSign.sprite = buletop;
+            num = -num;
+        }
+        else { topSign.sprite = redtop; }
+        totalPtrText.text = num.ToString();
     }
 
     public void ClearAllSkillWnd()
@@ -81,6 +101,14 @@ public class UIMgr : MonoBehaviour
             ClearAllSkillWnd();
             peoInfoCard.gameObject.SetActive(false);
         }
+        if (uiState != 0)
+        {
+            cancelTip.SetActive(true);
+        }
+        else {
+            cancelTip.SetActive(false);
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             ray = camera.ScreenPointToRay(Input.mousePosition);
@@ -109,13 +137,13 @@ public class UIMgr : MonoBehaviour
                 {
                     Lawyerletter();
                 }
-                else if (uiState == 4)     //饭圈文化
+                else if (uiState == 4 )     //饭圈文化
                 {
                     FansClub();
                 }
                 else if (!isClickOnUI())     //没点到人 也没点到ui  则隐藏卡片信息
                 {
-                    Debug.Log("setactive");
+                    Debug.Log("click nothing");
                     peoInfoCard.gameObject.SetActive(false);
                 }
             }
@@ -192,25 +220,25 @@ public class UIMgr : MonoBehaviour
         else if (uiState == 2)      //信息炸弹
         {
             mouseChange.isScope = true;
-
+            
             if (isOnPeople())
             {
-                mouseChange.index = 1;
+                mouseChange.index = 4;
             }
             else
             {
-                mouseChange.index = 0;
+                mouseChange.index = 4;
             }
         }
         else if (uiState == 3)      //律师函
         {
             if (isOnPeople())
             {
-                mouseChange.index = 1;
+                mouseChange.index = 6;
             }
             else
             {
-                mouseChange.index = 0;
+                mouseChange.index = 5;
             }
         }
         else if (uiState == 4)      //饭圈文化
@@ -218,11 +246,11 @@ public class UIMgr : MonoBehaviour
             mouseChange.isScope = true;
             if (isOnPeople())
             {
-                mouseChange.index = 1;
+                mouseChange.index = 7;
             }
             else
             {
-                mouseChange.index = 0;
+                mouseChange.index = 7;
             }
         }
     }
@@ -243,14 +271,15 @@ public class UIMgr : MonoBehaviour
             GameRoot.instance.money -= curAlwaryPeople.money;
             showMoney.UpdateMoney();
             curAlwaryPeople.BuyPeople();
-            AfterBuyShow abs = Instantiate(go_talk, uiRoot1).GetComponent<AfterBuyShow>();
+            AfterBuyShow abs= Instantiate(go_talk, uiRoot1).GetComponent<AfterBuyShow>();
             string tmpstr = GameRoot.instance.GetRamTalkByType(curAlwaryPeople.type);
             abs.SetTalk(tmpstr, curAlwaryPeople.transform, talkOffset);
             abs.transform.position = Camera.main.WorldToScreenPoint(curAlwaryPeople.transform.position + talkOffset);
         }
         else
         {
-            Debug.Log("资金不足-收买");
+            Debug.Log("资金不足");
+            showMoney.Warn();
         }
         uiState = 0;
         needMoney.gameObject.SetActive(false);
@@ -269,7 +298,8 @@ public class UIMgr : MonoBehaviour
     {
         if (GameRoot.instance.money < GameRoot.instance.skillPrice[1])
         {
-            Debug.Log("资金不足-轰炸" + " " + GameRoot.instance.money + " < " + GameRoot.instance.skillPrice[1]);
+            Debug.Log("资金不足");
+            showMoney.Warn();
         }
         else {
             Debug.Log("消息轰炸");
@@ -278,16 +308,16 @@ public class UIMgr : MonoBehaviour
 
             List<People> plist = new List<People>();
             Vector3 r = new Vector3(0, -0.5f, 0.5f);
-            if (curAlwaryPeople == null) { r = Vector3.zero; }
+            if (curAlwaryPeople==null) { r = Vector3.zero; }
             //Collider[] colliders = Physics.OverlapSphere(mousePosInWorld + r, 0.6f, LayerMask.GetMask("people"));
             //Instantiate(tmpSphere, mousePosInWorld + r, Quaternion.identity);
-
-            Collider[] colliders = Physics.OverlapBox(mousePosInWorld + r, new Vector3(0.6f, 1f, 1f), Quaternion.identity, LayerMask.GetMask("people"));
+            
+            Collider[] colliders = Physics.OverlapBox(mousePosInWorld + r, new Vector3(0.6f,1f,1f),Quaternion.identity,LayerMask.GetMask("people"));
             foreach (Collider co in colliders)
             {
                 plist.Add(co.gameObject.GetComponent<People>());
             }
-            //Debug.Log("list:  "+plist.Count);
+            Debug.Log("list:  "+plist.Count);
             foreach (People p in plist)
             {
                 p.InfoBomb();
@@ -295,7 +325,7 @@ public class UIMgr : MonoBehaviour
         }
 
         uiState = 0;
-        mouseChange.isScope = false;
+        mouseChange.isScope=false;
     }
 
 
@@ -318,7 +348,8 @@ public class UIMgr : MonoBehaviour
         }
         else
         {
-            Debug.Log("资金不足 律师函" + " " + GameRoot.instance.money + " < " + GameRoot.instance.skillPrice[2]);
+            Debug.Log("资金不足");
+            showMoney.Warn();
         }
         uiState = 0;
         needMoney.gameObject.SetActive(false);
@@ -337,7 +368,8 @@ public class UIMgr : MonoBehaviour
     public void FansClub() {
         if (GameRoot.instance.money < GameRoot.instance.skillPrice[3])
         {
-            Debug.Log("资金不足-狂热" + " " + GameRoot.instance.money + " < " + GameRoot.instance.skillPrice[3]);
+            Debug.Log("资金不足");
+            showMoney.Warn();
         }
         else
         {
@@ -365,7 +397,6 @@ public class UIMgr : MonoBehaviour
         uiState = 0;
         mouseChange.isScope = false;
     }
-
 
     //#######>>>>>>>>==== 金币掉落 =====<<<<<<<<#########
     public void ShowCoin(List<Vector3> clist)

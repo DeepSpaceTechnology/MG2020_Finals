@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MouseChange : MonoBehaviour
 {
-    public Texture[] textures;  //普通01  收买23  
+    public Texture[] textures;  //普通01  收买23  信息轰炸4  律师函56  狂热7
     public Texture scope;
     
     public int index=0;

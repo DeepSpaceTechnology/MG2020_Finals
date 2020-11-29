@@ -25,6 +25,8 @@ public class PeopleManager : MonoBehaviour
     public float Basetimer = 0;
     public float PeoMoneyCd = 5f;//人数赚钱cd
     public float Peotimer = 0;
+    public float NewsCd = 5f;//newcd
+    public float Newstimer = 0;
     private void Awake()
     {
         instance = this;
@@ -125,6 +127,16 @@ public class PeopleManager : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            UIMgr.instance.leftTip.ShowText("我是boss，我是b我是boss，0");
+        }
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            UIMgr.instance.newsRoll.AddNews("我是boss，我是b我是boss新闻");
+        }
+
         //统计各种信息
         float agreesum = 0;
         int agsum = 0;
@@ -191,6 +203,32 @@ public class PeopleManager : MonoBehaviour
             UIMgr.instance.ShowCoin(clist);
             UIMgr.instance.showMoney.UpdateMoney();
         }
+
+        //新闻
+        if (Newstimer < NewsCd)
+        {
+            Newstimer += Time.deltaTime;
+        }
+        else
+        {
+            Newstimer = 0;
+            if(agL>=0 && agL < 0.25)
+            {
+                UIMgr.instance.newsRoll.AddNews(GameRoot.instance.newsArr[Random.Range(0,17)]);
+            }
+            else if (agL >= 0.25 && agL < 0.5)
+            {
+                UIMgr.instance.newsRoll.AddNews(GameRoot.instance.newsArr[Random.Range(17, 34)]);
+            }
+            else if (agL >= 0.5 && agL < 0.75)
+            {
+                UIMgr.instance.newsRoll.AddNews(GameRoot.instance.newsArr[Random.Range(34, 51)]);
+            }
+            else if (agL >= 0.75 && agL< 1)
+            {
+                UIMgr.instance.newsRoll.AddNews(GameRoot.instance.newsArr[Random.Range(51, 68)]);
+            }
+}
     }
 }
 public class Utilities
