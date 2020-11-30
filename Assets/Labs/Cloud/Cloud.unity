@@ -8395,7 +8395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f5e68037bf3cb41ac5ad7d1bff0585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  money: 300
+  money: 400
   skillPrice: 00000000280000001e00000032000000
   newsArr: []
   tipArr: []
