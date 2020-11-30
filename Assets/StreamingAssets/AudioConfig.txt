@@ -1,0 +1,11 @@
+10
+btn btn.wav
+失败 失败.wav
+结束 结束.mp3
+tip tip.mp3
+锤子 锤子.wav
+狂热 狂热.wav
+花钱 花钱.wav
+赚钱 赚钱.wav
+纸张 纸张.wav
+bgm bgm.mp3

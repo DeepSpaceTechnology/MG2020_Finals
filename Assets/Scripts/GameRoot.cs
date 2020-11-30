@@ -10,6 +10,52 @@ public class GameRoot : MonoBehaviour
     public string[][] talksArr;
     public string[] newsArr;
 
+    //LeftTip
+    public string[] tipArr;
+    public float tipGap = 10f;
+    public float tipTimer = 10f;
+
+    public bool firstBuy0 = true;
+    public bool firstBuy1 = true;
+    public bool firstBuy2 = true;
+    public bool firstBuy3 = true;
+
+    public bool firstSkill_infoBoom = true;
+    public bool firstSkill_lawyer = true;
+    public bool firstSkill_fansclub = true;
+
+    public bool firstNews_Dis_20 = true;
+    public bool firstNews_0 = true;
+    public bool firstNews_25 = true;
+    public bool firstNews_75 = true;
+
+    private void InitiaTipArr()
+    {
+        tipArr = new string[20];
+        tipArr[0] = "收买一个普通人…嗯，积少成多嘛。";                    //买不同人
+        tipArr[1] = "传八卦的人应该是能帮到我们的";
+        tipArr[2] = "他们的口头禅是不是“你在教我做事？”";
+        tipArr[3] = "我没见过比这还能说的人。";
+
+        tipArr[4] = "发这么多条广告总有人会信的。";     //技能
+        tipArr[5] = "用法律让他害怕，文明人的武器！";
+        tipArr[6] = "我愿称之为——信仰的力量！";
+
+        tipArr[7] = "他们的优势地位就要结束了！";                 //-20
+        tipArr[8] = "我们的支持率已经和他们平分秋色了！";    //0
+        tipArr[9] = "好耶，支持我们的人比支持他们的还多了！";        //25
+        tipArr[10] = "我们掌握了优势！他们终将皈依真理！";                 //75
+        tipArr[19] = "现在所有人都在支持我们,就像我们的影子一样!";
+    }
+
+    private void Update()
+    {
+        if (tipTimer >= 0)
+        {
+            tipTimer -= Time.deltaTime;
+        }
+    }
+
     private void Awake()
     {
         if (instance == null)
@@ -19,6 +65,7 @@ public class GameRoot : MonoBehaviour
     }
     private void Start()
     {
+        InitiaTipArr();
         talksArr = new string[4][];
         for (int i = 0; i < 4; i++)
         {
@@ -119,4 +166,75 @@ public class GameRoot : MonoBehaviour
     {
         return talksArr[i][Random.Range(0, 4)];
     }
+
+    IEnumerator IEShowTip(int index, float _waitTime)
+    {
+        tipTimer = tipGap + _waitTime;      //恢复timer>0;
+        yield return new WaitForSeconds(_waitTime);
+        UIMgr.instance.leftTip.ShowText(tipArr[index]);
+    }
+
+    public void ShowTip(int index, float _waitTime)
+    {
+        if (index==19)
+        {
+            tipTimer = 10f;
+        }
+        StartCoroutine(IEShowTip(index, _waitTime));
+    }
+
+    public void TryShowTipByTotalPtr(float ptr) {
+        if (ptr > 0.75)
+        {
+            if (tipTimer < 0 && firstNews_75)
+            {
+                firstNews_75 = false;
+                firstNews_25 = false;
+                firstNews_0 = false;
+                firstNews_Dis_20 = false;
+                ShowTip(10, 0f);
+            }
+        }else
+        if (ptr > 0.25)
+        {
+            if (tipTimer < 0 && firstNews_25)
+            {
+                firstNews_25 = false;
+                firstNews_0 = false;
+                firstNews_Dis_20 = false;
+                ShowTip(9, 0f);
+            }
+        }
+        else
+        if (ptr > 0)
+        {
+            if (tipTimer < 0 && firstNews_0)
+            {
+                firstNews_0 = false;
+                firstNews_Dis_20 = false;
+                ShowTip(8, 0f);
+            }
+        }
+        else
+        if (ptr>-0.2) {
+            if (tipTimer < 0 && firstNews_Dis_20)
+            {
+                firstNews_Dis_20 = false;
+                ShowTip(7, 0f);     
+            }
+        }
+    }
+
+    [ContextMenu("warn")]
+    public void testwarn()
+    {
+        AudioManager.Instance.PlayAudio("失败");
+    }
+
+    [ContextMenu("over")]
+    public void testover()
+    {
+        AudioManager.Instance.PlayAudio("结束");
+    }
+
 }

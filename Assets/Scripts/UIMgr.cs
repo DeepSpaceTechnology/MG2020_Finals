@@ -76,6 +76,7 @@ public class UIMgr : MonoBehaviour
         }
         else { topSign.sprite = redtop; }
         totalPtrText.text = num.ToString();
+        GameRoot.instance.TryShowTipByTotalPtr(tmp);
     }
 
     public void ClearAllSkillWnd()
@@ -268,6 +269,7 @@ public class UIMgr : MonoBehaviour
         if (GameRoot.instance.money >= curAlwaryPeople.money)
         {
             Debug.Log("收买");
+            AudioManager.Instance.PlayAudio("花钱");
             GameRoot.instance.money -= curAlwaryPeople.money;
             showMoney.UpdateMoney();
             curAlwaryPeople.BuyPeople();
@@ -275,6 +277,40 @@ public class UIMgr : MonoBehaviour
             string tmpstr = GameRoot.instance.GetRamTalkByType(curAlwaryPeople.type);
             abs.SetTalk(tmpstr, curAlwaryPeople.transform, talkOffset);
             abs.transform.position = Camera.main.WorldToScreenPoint(curAlwaryPeople.transform.position + talkOffset);
+
+            switch (curAlwaryPeople.type)
+            {
+                case 0:
+                    if (GameRoot.instance.tipTimer < 0 && GameRoot.instance.firstBuy0)
+                    {
+                        GameRoot.instance.firstBuy0 = false;
+                        GameRoot.instance.ShowTip(0, 2f);        //句子id,waittime
+                    }
+                    break;
+                case 1:
+                    if (GameRoot.instance.tipTimer < 0 && GameRoot.instance.firstBuy1)
+                    {
+                        GameRoot.instance.firstBuy1 = false;
+                        GameRoot.instance.ShowTip(1, 2f);        //句子id,waittime
+                    }
+                    break;
+                case 2:
+                    if (GameRoot.instance.tipTimer < 0 && GameRoot.instance.firstBuy2)
+                    {
+                        GameRoot.instance.firstBuy2 = false;
+                        GameRoot.instance.ShowTip(2, 2f);        //句子id,waittime
+                    }
+                    break;
+                case 3:
+                    if (GameRoot.instance.tipTimer < 0 && GameRoot.instance.firstBuy3)
+                    {
+                        GameRoot.instance.firstBuy3 = false;
+                        GameRoot.instance.ShowTip(3, 2f);        //句子id,waittime
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
         else
         {
@@ -303,6 +339,7 @@ public class UIMgr : MonoBehaviour
         }
         else {
             Debug.Log("消息轰炸");
+            AudioManager.Instance.PlayAudio("纸张");
             GameRoot.instance.money -= GameRoot.instance.skillPrice[1];
             showMoney.UpdateMoney();
 
@@ -321,6 +358,12 @@ public class UIMgr : MonoBehaviour
             foreach (People p in plist)
             {
                 p.InfoBomb();
+            }
+
+            if (GameRoot.instance.tipTimer < 0 && GameRoot.instance.firstSkill_infoBoom)
+            {
+                GameRoot.instance.firstSkill_infoBoom = false;
+                GameRoot.instance.ShowTip(4, 1f);        //句子id,waittime
             }
         }
 
@@ -343,8 +386,15 @@ public class UIMgr : MonoBehaviour
         if (GameRoot.instance.money >= GameRoot.instance.skillPrice[2])
         {
             Debug.Log("律师函");
+            AudioManager.Instance.PlayAudio("锤子");
             GameRoot.instance.money -= GameRoot.instance.skillPrice[2];
             curAlwaryPeople.Lawyerletter();
+
+            if (GameRoot.instance.tipTimer < 0 && GameRoot.instance.firstSkill_lawyer)
+            {
+                GameRoot.instance.firstSkill_lawyer = false;
+                GameRoot.instance.ShowTip(5, 1f);        //句子id,waittime
+            }
         }
         else
         {
@@ -374,6 +424,7 @@ public class UIMgr : MonoBehaviour
         else
         {
             Debug.Log("狂热群体");
+            AudioManager.Instance.PlayAudio("狂热");
             GameRoot.instance.money -= GameRoot.instance.skillPrice[3];
             showMoney.UpdateMoney();
 
@@ -392,6 +443,12 @@ public class UIMgr : MonoBehaviour
             foreach (People p in plist)
             {
                 p.FansClub();
+            }
+
+            if (GameRoot.instance.tipTimer < 0 && GameRoot.instance.firstSkill_fansclub)
+            {
+                GameRoot.instance.firstSkill_fansclub = false;
+                GameRoot.instance.ShowTip(6, 1f);        //句子id,waittime
             }
         }
         uiState = 0;

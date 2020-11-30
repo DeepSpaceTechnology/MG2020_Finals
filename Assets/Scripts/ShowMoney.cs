@@ -14,5 +14,6 @@ public class ShowMoney : MonoBehaviour
     public void Warn()
     {
         anim.Play();
+        AudioManager.Instance.PlayAudio("失败");
     }
 }

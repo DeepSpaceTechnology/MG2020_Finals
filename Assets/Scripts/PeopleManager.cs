@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PeopleManager : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class PeopleManager : MonoBehaviour
     public float Peotimer = 0;
     public float NewsCd = 5f;//newcd
     public float Newstimer = 0;
+    public Animation black;
+    public bool isGameOver = false;
     private void Awake()
     {
         instance = this;
@@ -97,10 +100,10 @@ public class PeopleManager : MonoBehaviour
             //}
             agreesum += agree;
             totalAgree = agreesum / totalNum;
-            go.GetComponent<People>().agree = agree-0.03f;
+            go.GetComponent<People>().agree = agree - 0.03f;
             go.GetComponent<People>().ChangeColor();
             pList.Add(go.GetComponent<People>());
-            go.GetComponent<People>().cdTimer = Random.Range(2f,5f);
+            go.GetComponent<People>().cdTimer = Random.Range(2f, 5f);
             go.name += "-" + curNum;
         }
     }
@@ -110,14 +113,14 @@ public class PeopleManager : MonoBehaviour
         float x = (id - 1) % countx * (mapx / countx) + (mapx / countx) / 2;
         float z = (int)((id - 1) / countx) * (mapz / countz) + (mapz / countz) / 2;
         Vector3 offset = new Vector3(Random.Range(-0.8f, 0.8f), 0, Random.Range(-0.8f, 0.8f));
-        Vector3 res = new Vector3(x, peoObj[0].transform.position.y, z) + offset-new Vector3(7,0,4);
+        Vector3 res = new Vector3(x, peoObj[0].transform.position.y, z) + offset - new Vector3(7, 0, 4);
         return res;
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            if (Time.timeScale ==1)
+            if (Time.timeScale == 1)
             {
                 Time.timeScale = 5;
             }
@@ -160,9 +163,19 @@ public class PeopleManager : MonoBehaviour
             }
         }
         totalAgree = agreesum / totalNum;
-        agCount = agsum;
-        disCount = dissum;
-        agL = (float)(agCount) / totalNum;
+        if (agL != 1f)
+        {
+            agCount = agsum;
+            disCount = dissum;
+            agL = (float)(agCount) / totalNum;
+        }
+        else if(!isGameOver)
+        {
+            isGameOver = true;
+            GameRoot.instance.ShowTip(19, 0);
+            AudioManager.Instance.PlayAudio("结束");
+            StartCoroutine(GameOver());
+        }
 
         //赚钱
         if (Basetimer < BaseMoneyCd)
@@ -182,7 +195,7 @@ public class PeopleManager : MonoBehaviour
         else
         {
             Peotimer = 0;
-            GameRoot.instance.money += Mathf.Clamp(m,0,25);
+            GameRoot.instance.money += Mathf.Clamp(m, 0, 25);
             List<Vector3> clist = new List<Vector3>();
             foreach (People p in pList)
             {
@@ -197,11 +210,12 @@ public class PeopleManager : MonoBehaviour
                     {
                         clist.Add(Camera.main.WorldToScreenPoint(p.transform.position + new Vector3(0, 0.7f, 0)));
                     }
-                    
+
                 }
             }
             UIMgr.instance.ShowCoin(clist);
             UIMgr.instance.showMoney.UpdateMoney();
+            AudioManager.Instance.PlayAudio("赚钱",false,0.3f);
         }
 
         //新闻
@@ -212,9 +226,9 @@ public class PeopleManager : MonoBehaviour
         else
         {
             Newstimer = 0;
-            if(agL>=0 && agL < 0.25)
+            if (agL >= 0 && agL < 0.25)
             {
-                UIMgr.instance.newsRoll.AddNews(GameRoot.instance.newsArr[Random.Range(0,17)]);
+                UIMgr.instance.newsRoll.AddNews(GameRoot.instance.newsArr[Random.Range(0, 17)]);
             }
             else if (agL >= 0.25 && agL < 0.5)
             {
@@ -224,11 +238,18 @@ public class PeopleManager : MonoBehaviour
             {
                 UIMgr.instance.newsRoll.AddNews(GameRoot.instance.newsArr[Random.Range(34, 51)]);
             }
-            else if (agL >= 0.75 && agL< 1)
+            else if (agL >= 0.75 && agL < 1)
             {
                 UIMgr.instance.newsRoll.AddNews(GameRoot.instance.newsArr[Random.Range(51, 68)]);
             }
-}
+        }
+    }
+    IEnumerator GameOver()
+    {
+        yield return new WaitForSeconds(5f);
+        black.Play();
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("End");
     }
 }
 public class Utilities
