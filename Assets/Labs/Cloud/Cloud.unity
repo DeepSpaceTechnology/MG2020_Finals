@@ -8400,7 +8400,7 @@ MonoBehaviour:
   newsArr: []
   tipArr: []
   tipGap: 3
-  tipTimer: 10
+  tipTimer: 5
   firstBuy0: 1
   firstBuy1: 1
   firstBuy2: 1

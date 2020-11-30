@@ -460,7 +460,7 @@ public class People : MonoBehaviour
     {
         float org = speed;
         speed = 1.4f;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         speed = org;
     }
 
