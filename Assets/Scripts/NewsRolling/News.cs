@@ -12,6 +12,7 @@ public class News : MonoBehaviour
     public float Outer { get; set; }
     public float Ender { get; set; }
     public float Speed { get; set; }
+    public NewsRoll master;
 
     public RectTransform Recter { get; set; }
 
@@ -33,8 +34,8 @@ public class News : MonoBehaviour
         }
         else
         {
-            this.gameObject.SetActive(false);
-            Generate();
+            //this.gameObject.SetActive(false);
+            //Generate();
         }
         IsEnd = IsNewsEnd();
         IsOut = IsNewsOut();

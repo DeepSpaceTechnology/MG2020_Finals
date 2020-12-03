@@ -66,8 +66,9 @@ public class NewsRoll : MonoBehaviour
     public void AddNews(String content) => newsList.Enqueue(content);
     
 
-    public void RemoveNews(int index)
+    public void RemoveNews(string content)
     {
+        int index = _newsesList.FindIndex(t => t.content == content);
         News curRollingNews = _newsesList[_curRolling];
         if (index != _curRolling)
         {

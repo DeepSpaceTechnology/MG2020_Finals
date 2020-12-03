@@ -45,7 +45,7 @@ Material:
     - _CloudSelfSpeed: 0
     - _Cutoff: 0.01
     - _FurDensity: 0.88
-    - _FurLength: 15.3
+    - _FurLength: 3.02
     - _FurShading: 1.56
     - _FurThinness: 6.11
     - _RimPower: 0.298
@@ -55,7 +55,7 @@ Material:
     - _WindFrequency: 0
     m_Colors:
     - _AOColor: {r: 0.21962771, g: 0.21893913, b: 0.2264151, a: 0.6862745}
-    - _Color: {r: 0.094117634, g: 0.18195915, b: 0.32156864, a: 0.043137256}
+    - _Color: {r: 0.094117515, g: 0.18195903, b: 0.3215685, a: 0.03529412}
     - _CustomLightDir: {r: 25.86, g: 0, b: 3.6, a: 0}
     - _ForceGlobal: {r: 0, g: 0, b: 0, a: 0}
     - _ForceLocal: {r: 0, g: 0, b: 0, a: 0}

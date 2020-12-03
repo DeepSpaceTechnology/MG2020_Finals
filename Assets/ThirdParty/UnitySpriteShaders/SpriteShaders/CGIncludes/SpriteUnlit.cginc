@@ -42,10 +42,10 @@ VertexOutput vert(VertexInput input)
 	output.pos = calculateLocalPos(input.vertex);	
 	output.texcoord = calculateTextureCoord(input.texcoord);
 	output.color = calculateVertexColor(input.color);
-	fixed3 hsv = RGBConvertToHSV(output.color.rgb);
-	hsv.x = 1;
-	fixed3 rgb = HSVConvertToRGB(hsv);
-	output.color.rgb = rgb;
+	//fixed3 hsv = RGBConvertToHSV(output.color.rgb);
+	//hsv.x = 1;
+	//fixed3 rgb = HSVConvertToRGB(hsv);
+	//output.color.rgb = rgb;
 
 
 #if defined(_FOG)

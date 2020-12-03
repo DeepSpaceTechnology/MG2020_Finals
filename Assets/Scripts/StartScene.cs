@@ -7,6 +7,10 @@ using UnityEngine.Video;
 public class StartScene : MonoBehaviour
 {
     public GameObject v;
+    private void Awake()
+    {
+        Screen.SetResolution(1920, 1080, true);
+    }
     private void Start()
     {
         v.GetComponent<VideoPlayer>().loopPointReached += EndVideo;

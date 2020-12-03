@@ -10,6 +10,7 @@ public class EndScene : MonoBehaviour
     public GameObject g;
     private void Start()
     {
+        Cursor.visible = true;
         v.GetComponent<VideoPlayer>().loopPointReached += EndVideo;
     }
     [ContextMenu("end")]
